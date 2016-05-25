@@ -16,6 +16,9 @@ class CreateUsers extends Migration
             $table->increments('id');
             $table->string('username')->unique();
             $table->string('email')->unique();
+            $table->string('name');
+            $table->string('surname');
+            $table->string('telephone');
             $table->boolean('enabled');
             $table->boolean('roles');
             $table->string('password');
