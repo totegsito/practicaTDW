@@ -5,30 +5,28 @@ namespace App;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 
-class Users extends Authenticatable
+class Court extends Authenticatable
 {
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'users';
-
+    protected $table = "courts";
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = [
-        'name', 'email', 'password', 'enabled', 'roles', 'firstname', 'surname', 'telephone'
-    ];
-
+    protected $fillable = ["avaliable"];
     /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
      */
-    protected $hidden = [
-        'password', 'remember_token', 'updated_at', 'created_at'
-    ];
+    protected $hidden = ["created_at", "updated_at"];
+    
+    public function users(){
+        return $this->belongsToMany('App\Users', 'courts_users', 'courts_id', 'users_id')->withPivot('reservation');
+    }
 }

@@ -18,25 +18,36 @@ class UsersTableSeeder extends Seeder {
 
         $faker = Faker\Factory::create();
         
+        Users::create([
+            'email'=>'admin@admin.es',
+            'name'=>'admin',
+            'password'=>Hash::make('admin123'),
+            'firstname' => $faker->firstName,
+            'surname' => $faker->lastName,
+            'telephone' => $faker->phoneNumber,
+            'roles'=>'1',
+            'enabled'=>'1'
+        ]);
+        
         Users::create(
             [
                 'email'=>$faker->email,
-                'name' => $faker->firstName,
+                'firstname' => $faker->firstName,
                 'surname' => $faker->lastName,
                 'telephone' => $faker->phoneNumber,
-                'username'=>$faker->userName,
+                'name'=>$faker->userName,
                 'password'=> Hash::make('abc123'),
-                'roles'=>0
+                'roles'=> '0'
             ]);
         Users::create(
             [
                 'email'=>$faker->email,
-                'name' => $faker->firstName,
+                'firstname' => $faker->firstName,
                 'surname' => $faker->lastName,
                 'telephone' => $faker->phoneNumber,
-                'username'=>$faker->userName,
+                'name'=>$faker->userName,
                 'password'=>Hash::make('admin123'),
-                'roles'=>1
+                'roles'=> '1'
             ]
         );
 

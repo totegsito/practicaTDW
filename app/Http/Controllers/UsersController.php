@@ -47,24 +47,31 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        if(Auth::user()->roles!=1){
-            return response()->json(['code'=>403, 'message'=>'Se necesita rol Admin'], 403);
-        }
-        if (!$request->input('username')) {
-            return response()->json(['code' => 422, 'message' => trans('validation.required', ["attribute" => "username"])], 422);
-        } else if (!$request->input('email')) {
-            return response()->json(['code' => 422, 'message' => trans('validation.required', ["attribute" => "email"])], 422);
-        } else if (!$request->input('password')) {
-            return response()->json(['code' => 422, 'message' => trans('validation.required', ["attribute" => "password"])], 422);
-        } else if (Users::find($request->input('username'))) {
-            return response()->json(['code' => 400, 'message' => 'El usuario ' . $request->input('username') . ' ya existe'], 400);
-        } else if (Users::find($request->input('email'))) {
+
+        $this->validate($request, [
+            'name' => 'required|max:255',
+            'email' => 'required|email|max:255|unique:users',
+            'password' => 'required|min:6',
+            'firstname' => 'min:3|max:45',
+            'surname' => 'min:5|max:100',
+            'telephone' => 'max:15',
+            'enabled' => 'boolean',
+            'roles' => 'boolean'
+        ]);
+
+        if (Users::where('name', $request->input('name'))->count()>0) {
+            return response()->json(['code' => 400, 'message' => 'El usuario ' . $request->input('name') . ' ya existe'], 400);
+        } else if (Users::where('email', $request->input('email'))->count()>0) {
             return response()->json(['code' => 400, 'message' => 'El email ' . $request->input('email') . ' ya existe'], 400);
         }
 
         $newUser = Users::create($request->all());
+        $newUser->password = bcrypt($request->input('password'));
+        $newUser->save();
 
-        $response = \Illuminate\Support\Facades\Response::make(json_encode(["code" => 201, "message" => "Usuario creado correctamente"]), 201)->header('Location', 'http://laravel.dev/users/' . $newUser->id)->header('Content-Type', 'application/json');
+
+
+        $response = \Illuminate\Support\Facades\Response::make(json_encode(["code" => 201, "message" => "Usuario creado correctamente"]), 201)->header('Location', 'http://laravel.dev/api/users/' . $newUser->id)->header('Content-Type', 'application/json');
         return $response;
     }
 
@@ -94,21 +101,28 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->validate($request, [
+            'name' => 'required|max:255|unique:users,name,'.$id,
+            'email' => 'required|email|max:255|unique:users,email,'.$id,
+            'password' => 'min:6',
+            'firstname' => 'min:3|max:45',
+            'surname' => 'min:5|max:100',
+            'telephone' => 'max:15',
+        ]);
+        
 
-        if(!Auth::user()->roles){
-            return response()->json(['code'=>403, 'message'=>'Se necesita rol Admin'], 403);
-        }
         try {
 
             $user = Users::findOrFail($id);
-            $user->username = $request->input('username');
+            $user->name = $request->input('name');
             $user->email = $request->input('email');
-            $user->password = $request->input('password');
+            if($request->input('password')!=null)
+                $user->password = $request->input('password');
             $user->enabled = $request->input('enabled');
             $user->roles = $request->input('roles');
-            if(!$user->username || !$user->email || !$user->password){
-                return response()->json(['code'=>422, 'message'=>'Usuario, email y contraseña no pueden estar vacios'], 422);
-            }
+
+
+
             $user->save();
             return response()->json(['code' => 200, 'message' => 'Usuario actualizado correctamente'], 200);
 
@@ -127,9 +141,6 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        if(!Auth::user()->roles){
-            return response()->json(['code'=>403, 'message'=>'Se necesita rol Admin'], 403);
-        }
         try {
             $user = Users::findOrFail($id);
             $user->delete();
