@@ -16,6 +16,7 @@ Route::resource('api/users', 'UsersController');
 Route::options('api/users', 'UsersController@options');
 Route::resource('api/courts', 'CourtsController');
 Route::options('api/courts', 'CourtsController@options');
+Route::resource('api/reservations', 'ReservationsController');
 
 
 
@@ -26,5 +27,4 @@ Route::resource('home', 'HomeController@index');
 Route::get('admin', 'AdminController@index');
 Route::get('admin/users', 'AdminController@users');
 Route::get('admin/courts', 'AdminController@courts');
-
-
+Route::get('admin/profile', 'AdminController@profile');

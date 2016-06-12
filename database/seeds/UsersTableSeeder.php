@@ -29,27 +29,32 @@ class UsersTableSeeder extends Seeder {
             'enabled'=>'1'
         ]);
         
-        Users::create(
-            [
-                'email'=>$faker->email,
-                'firstname' => $faker->firstName,
-                'surname' => $faker->lastName,
-                'telephone' => $faker->phoneNumber,
-                'name'=>$faker->userName,
-                'password'=> Hash::make('abc123'),
-                'roles'=> '0'
-            ]);
-        Users::create(
-            [
-                'email'=>$faker->email,
-                'firstname' => $faker->firstName,
-                'surname' => $faker->lastName,
-                'telephone' => $faker->phoneNumber,
-                'name'=>$faker->userName,
-                'password'=>Hash::make('admin123'),
-                'roles'=> '1'
-            ]
-        );
+        
+        for($i = 0; $i<5; $i++){
+
+            Users::create(
+                [
+                    'email'=>$faker->email,
+                    'firstname' => $faker->firstName,
+                    'surname' => $faker->lastName,
+                    'telephone' => $faker->phoneNumber,
+                    'name'=>$faker->userName,
+                    'password'=> Hash::make('abc123'),
+                    'enabled'=>$faker->boolean(),
+                    'roles'=> '0'
+                ]);
+            Users::create(
+                [
+                    'email'=>$faker->email,
+                    'firstname' => $faker->firstName,
+                    'surname' => $faker->lastName,
+                    'telephone' => $faker->phoneNumber,
+                    'name'=>$faker->userName,
+                    'password'=>Hash::make('admin123'),
+                    'roles'=> '1'
+                ]
+            );
+        }
 
     }
 }

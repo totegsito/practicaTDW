@@ -4,6 +4,7 @@ var app = angular.module('PadelCourts', [], function($interpolateProvider) {
 });
 
 app.controller('CourtsController', function($scope, $http) {
+    $scope.shownCourts = [];
     $scope.courts = [];
     $scope.loading = false;
 
@@ -13,6 +14,7 @@ app.controller('CourtsController', function($scope, $http) {
         $http.get('../api/courts').
         success(function(data, status, headers, config) {
             $scope.courts = data.courts;
+            $scope.shownCourts = $scope.courts.slice(0,5);
             $scope.loading = false;
         });
     };
@@ -25,6 +27,7 @@ app.controller('CourtsController', function($scope, $http) {
         ).success(function(data, status, headers, config) {
             $scope.courts.push(data);
             $scope.court = {};
+            console.log($scope.courts);
             $scope.loading = false;
         });
     };
@@ -58,6 +61,8 @@ app.controller('CourtsController', function($scope, $http) {
                 $scope.courts.splice(index, 1);
                 $scope.loading = false;
             });
+
+        $scope.$apply();
     };
 
 
@@ -67,13 +72,28 @@ app.controller('CourtsController', function($scope, $http) {
 app.controller('UsersController', function($scope, $http) {
 
     $scope.users = [];
+    $scope.concreteUser = {};
+    $scope.shownUsers = [];
     $scope.loading = false;
+    $scope.error = {};
+    $scope.success = false;
 
     $scope.initUsers = function() {
         $scope.loading = true;
         $http.get('../api/users').
         success(function(data, status, headers, config) {
             $scope.users = data.users;
+            $scope.shownUsers = $scope.users.slice(0,5);
+            console.log($scope.shownUsers);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.getConcreteUser = function (id) {
+        $scope.loading = true;
+        $http.get('../api/users/'+id).
+        success(function(data, status, headers, config) {
+            $scope.concreteUser = data.user;
             $scope.loading = false;
         });
     };
@@ -101,15 +121,19 @@ app.controller('UsersController', function($scope, $http) {
         }).success(function(data, status, headers, config) {
             $scope.users.push(data);
             $scope.user = '';
+            $scope.success = true;
+            $scope.$apply();
             $scope.loading = false;
-
+        }).error(function (data, status, headers, config) {
+            $scope.error= data;
+            $scope.success = false;
+            $scope.loading = false;
         });
     };
 
     $scope.updateUser = function(user) {
         $scope.loading = true;
-
-        console.log(user);
+        
         $http.put('../api/users/' + user.id, {
             name:       user.name,
             email:      user.email,
@@ -120,10 +144,14 @@ app.controller('UsersController', function($scope, $http) {
             surname:    user.surname,
             telephone:  user.telephone
         }).success(function(data, status, headers, config) {
-
             user = data;
+            $scope.error = {};
+            $scope.success = true;
             $scope.loading = false;
-
+        }).error(function (data, status, headers, config) {
+            $scope.error= data;
+            $scope.success = false;
+            $scope.loading = false;
         });
     };
 
@@ -135,8 +163,14 @@ app.controller('UsersController', function($scope, $http) {
         $http.delete('../api/users/' + user.id)
             .success(function() {
                 $scope.users.splice(index, 1);
+                $scope.success = true;
                 $scope.loading = false;
-            });
+            })
+            .error(function (data, status, headers, config) {
+            $scope.error= data;
+            $scope.success = false;
+            $scope.loading = false;
+        });
     };
 
 

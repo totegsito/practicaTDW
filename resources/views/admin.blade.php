@@ -11,6 +11,7 @@
                 <main class="list-group">
                     <a class="list-group-item" href="{{url('admin/users')}}">Gestión de usuarios</a>
                     <a class="list-group-item" href="{{url('admin/courts')}}">Gestión de pistas</a>
+                    <a class="list-group-item" href="{{url('admin/profile')}}">Mi perfil</a>
                 </main>
             </article>
 

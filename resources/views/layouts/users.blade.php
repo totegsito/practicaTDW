@@ -7,6 +7,7 @@
                     <h1>Usuarios</h1>
                 </header>
                 <div class="table-responsive">
+                    <h1></h1>
                     <table class="table table-striped">
                         <tr>
                             <th>id</th>
@@ -17,14 +18,13 @@
                             <th>Apellidos</th>
                             <th>Teléfono</th>
                             <th>Borrar</th>
-
                         </tr>
-
                         <tr ng-repeat="user in users">
                             <td><p class="form-control-static"><% user.id %></p>
                             </td>
-                            <td><input type="checkbox" ng-true-value="1" ng-false-value="0" ng-model="user.enabled"
-                                       ng-change="updateUser(user)"></td>
+                            <td>
+                                <input type="checkbox" ng-true-value="1" ng-false-value="0" ng-model="user.enabled"
+                                       ng-blur="updateUser(user)"></td>
                             <td>
                                 <input class="form-control" type="text" ng-model="user.name" ng-blur="updateUser(user)">
                             </td>
@@ -56,13 +56,12 @@
                                 <input class="form-control" id="newUser" type="text" ng-model="user.name"
                                        pattern="[a-zA-Z0-9_-]{3,255}" required>
                             </div>
-
                             <div class="col-lg-6 col-md-6 col-sm-6">
+
                                 <label for="newPassword">Contraseña</label>
                                 <input class="form-control" id="newPassword" type="password" ng-model="user.password"
                                        pattern="[a-zA-Z0-9_-]{6,18}" required>
                             </div>
-
                             <div class="col-lg-12 col-md-12 col-sm-12">
                                 <label for="newEmail">Email</label>
                                 <input class="form-control" id="newEmail" type="email" ng-model="user.email"
@@ -84,11 +83,10 @@
 
                             <div class="col-lg-12 col-md-12 col-sm-12">
                                 <label for="newTelephone">Teléfono</label>
-                                <input class="form-control" id="newTelephone" type="tel" ng-model="user.telephone">
+                                <input class="form-control" id="newTelephone" type="tel" ng-model="user.telephone" required>
                             </div>
                         </div>
 
-                        <p class="form-control-static">Los campos marcados con (*) son obligatorios</p>
                         <button type="submit" class="btn btn-primary">Añadir usuario</button>
                     </form>
                 </footer>

@@ -25,6 +25,15 @@ class Court extends Authenticatable
      * @var array
      */
     protected $hidden = ["created_at", "updated_at"];
+
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = [
+        "id"
+    ];
     
     public function users(){
         return $this->belongsToMany('App\Users', 'courts_users', 'courts_id', 'users_id')->withPivot('reservation');

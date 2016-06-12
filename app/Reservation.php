@@ -13,6 +13,19 @@ class Reservation extends Model
      */
     protected $table = "courts_users";
 
+
+    protected $fillable = [
+        "reservation_date", "users_id", "courts_id"
+    ];
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = [
+        "id"
+    ];
+
     /**
      * The attributes that should be hidden for arrays.
      *

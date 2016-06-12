@@ -8,7 +8,7 @@
                 <div class="panel-heading">Dashboard</div>
 
                 <div class="panel-body">
-                        Bienvenido a su centro de reserva de pistas
+                    You are logged in!
                 </div>
             </div>
         </div>

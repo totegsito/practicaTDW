@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 use App\Http\Requests;
 
 class AdminController extends Controller
@@ -28,5 +26,9 @@ class AdminController extends Controller
     
     public function courts(){
         return view('layouts.courts');
+    }
+    
+    public function profile(){
+        return view('layouts.profile');
     }
 }

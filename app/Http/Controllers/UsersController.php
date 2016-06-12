@@ -49,7 +49,7 @@ class UsersController extends Controller
     {
 
         $this->validate($request, [
-            'name' => 'required|max:255',
+            'name' => 'required|max:255|unique:users',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6',
             'firstname' => 'min:3|max:45',
@@ -71,7 +71,7 @@ class UsersController extends Controller
 
 
 
-        $response = \Illuminate\Support\Facades\Response::make(json_encode(["code" => 201, "message" => "Usuario creado correctamente"]), 201)->header('Location', 'http://laravel.dev/api/users/' . $newUser->id)->header('Content-Type', 'application/json');
+        $response = \Illuminate\Support\Facades\Response::make(json_encode(["code" => 201, "message" => "Usuario creado correctamente", "user"=> $newUser]), 201)->header('Location', 'http://laravel.dev/api/users/' . $newUser->id)->header('Content-Type', 'application/json');
         return $response;
     }
 
@@ -89,7 +89,6 @@ class UsersController extends Controller
             return response()->json(['code' => 200, 'user' => $user], 200);
         } catch (ModelNotFoundException $ex) {
             return response()->json(['errors' => array(['code' => 404, 'message' => 'No se encuentra el usuario con id '.$id])], 404);
-
         }
     }
 
@@ -107,7 +106,6 @@ class UsersController extends Controller
             'password' => 'min:6',
             'firstname' => 'min:3|max:45',
             'surname' => 'min:5|max:100',
-            'telephone' => 'max:15',
         ]);
         
 
@@ -120,17 +118,14 @@ class UsersController extends Controller
                 $user->password = $request->input('password');
             $user->enabled = $request->input('enabled');
             $user->roles = $request->input('roles');
-
-
-
             $user->save();
             return response()->json(['code' => 200, 'message' => 'Usuario actualizado correctamente'], 200);
 
         } catch (ModelNotFoundException $ex) {
             return response()->json(['code' => 404, 'message' => 'No se encuentra el usuario con id '.$id], 404);
-        } catch (QueryException $ex) {
-            return response()->json(['code' => 401, 'message' => 'Usuario o email ya existe'], 400);
-        }
+        } /*catch (QueryException $ex) {
+            return response()->json(['code' => 400, 'message' => 'Usuario o email ya existe'], 400);
+        }*/
     }
 
     /**
@@ -147,7 +142,6 @@ class UsersController extends Controller
             return response()->json(['code' => 204, 'message' => 'Se ha eliminado el usuario correctamente'], 204);
         } catch (ModelNotFoundException $ex) {
             return response()->json(['errors' => array(['code' => 404, 'message' => 'No se encuentra el usuario con id '.$id])], 404);
-
         }
 
     }

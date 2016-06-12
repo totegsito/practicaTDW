@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-    <main class="container">
+    <main class="container" ng-app="PadelCourts">
 
-        <section class="col-md-9 col-md-push-3">
+        <section class="col-md-9 col-md-push-3" >
 
         @yield('management-content')
         </section>
@@ -17,6 +17,8 @@
                     <a href="{{url('admin/users')}}" class="list-group-item">Usuarios<span class="badge"
                                                                                       id="enabled-request"></span> </a>
                     <a href="{{url('admin/courts')}}" class="list-group-item">Pistas</a>
+                    <a href="{{url('admin/profile')}}" class="list-group-item">Mi perfil</a>
+
                 </div>
             </article>
         </aside>
