@@ -127,7 +127,6 @@ class ReservationsController extends Controller
             '3rd_player' => 'min:5|max:100|string',
             '4th_player' => 'min:5|max:100|string',
         ]);
-
         if($validator->fails()){
             $message = $validator->errors();
             if($message->has("courts_id")){

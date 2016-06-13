@@ -2,46 +2,37 @@
 
 @section('management-content')
 
-    <article ng-controller="CourtsController as cc">
+    <article>
         <header>
-            <h1>Pistas</h1>
+            <h1>Courts</h1>
         </header>
-        <div class="row">
+        <div class="row" id="courts-space">
 
-            <div class="col-lg-6 col-md-6" ng-repeat="court in courts">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <% "Pista " + ($index + 1)%>
-                    </div>
-                    <div class="panel-body">
-                        <table class="table success table-bordered court">
-                            <tr class="success">
-                                <td>1</td>
-                                <td>2</td>
-                            </tr>
-                            <tr class="success">
-                                <td>3</td>
-                                <td>4</td>
-                            </tr>
-                        </table>
-                    </div>
 
-                    <div class="panel-footer">
-
-                        <label> <input id="" type="checkbox" ng-true-value="1" ng-false-value="0" ng-model="court.avaliable"
-                                       ng-change="updateCourt(court)"><% court.avaliable ? "Disponible" : "No disponible" %></label>
-                        <br>
-                        <button class="btn btn-danger btn-xs" ng-click="deleteCourt($index)"><span
-                                    class="glyphicon glyphicon-trash"></span></button>
-                    </div>
-                </div>
-            </div>
         </div>
 
-            <form class="form-group" ng-submit="addCourt()">
+            <form class="form-group">
                 <button type="submit" class="btn btn-primary">Añadir pista</button>
             </form>
 
 
     </article>
+
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Delete Court</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Do you really want to delete the court?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" id="apply-delete">Delete</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 @endsection

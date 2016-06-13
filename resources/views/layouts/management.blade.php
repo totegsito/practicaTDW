@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-    <main class="container" ng-app="PadelCourts">
+    <main class="container">
 
-        <section class="col-md-9 col-md-push-3" >
+        <section>
 
         @yield('management-content')
         </section>
-        <aside class="col-md-3 col-md-pull-9">
+        <aside>
 
             <article class="panel panel-primary">
                 <div class="panel-heading">
@@ -23,4 +23,6 @@
             </article>
         </aside>
     </main>
+    <script src="{{ asset('js/admin.js') }}"></script>
+
 @endsection
