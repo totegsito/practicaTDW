@@ -65,7 +65,7 @@ var UsersManagement = function (worker) {
             newUser["surname"] = $('#newLastName').val();
             newUser["telephone"] = $('#newTelephone').val();
             addUser(newUser);
-        })
+        });
     };
 
 
@@ -132,7 +132,7 @@ var UsersManagement = function (worker) {
             error: function (xhr) {
                 console.log("Estoy en fail", xhr)
             }
-        })
+        });
     };
 
     var updateUser = function (id, data) {
@@ -188,7 +188,7 @@ var CourtsManagement = function (worker) {
             renderCourts();
         }, false);
         renderCourts();
-        //setJqueryEvents();
+        setJQueryEvents();
     };
 
     var setJQueryEvents = function () {
@@ -215,24 +215,30 @@ var CourtsManagement = function (worker) {
             var id = $(event.relatedTarget).data("delete");
             $('#apply-delete').on('click', {id: id}, function (event) {
                 var id = event.data.id;
+                console.log("Aquí estoy");
                 deleteCourt(id);
             });
+        });
+
+        $('#add-court').on("click", '#add', function (event) {
+            console.log("Here I am");
+            addCourt();
         });
     };
 
     var renderCourts = function () {
         var courtsSpace = $("#courts-space");
+        var addCourt = $('#add-court');
         courtsSpace.empty();
         for (var court in courts) {
             var current = courts[court];
-            var col = $('<div></div>').addClass("col-md-6").appendTo(courtsSpace);
+            var col = $('<div></div>').addClass("col-xs-6").appendTo(courtsSpace);
             var panel = $('<div></div>').addClass("panel panel-primary").appendTo(col);
             var panelHeading = $('<div></div>').addClass("panel-heading").appendTo(panel);
             var heading = $('<h3></h3>').text("Court " + (Number(court) + 1)).appendTo(panelHeading);
-            var panelBody = $('<div></div>').addClass("panel-body").appendTo(panel);
-            var tableCourt = $('<table></table>').addClass('table success table-bordered court').appendTo(panelBody);
+            var tableCourt = $('<table></table>').addClass('table success table-bordered court').appendTo(panel);
             for (var i = 0; i < 2; i++) {
-                var row = $('<tr></tr>').addClass('success').appendTo(tableCourt);
+                var row = $('<tr></tr>').addClass(current.avaliable ? "success" : "danger" ).appendTo(tableCourt);
                 for (var j = 0; j < 2; j++) {
                     var cell = $('<td></td>').appendTo(row);
                     var cellText = $('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>').appendTo(cell);
@@ -245,6 +251,26 @@ var CourtsManagement = function (worker) {
             var deleteButton = $('<button data-toggle="modal" data-target="#deleteModal" data-delete="' + courts[court].id + '"></button>').addClass("btn btn-danger").appendTo(buttonGroup);
             var deleteIcon = $('<span></span>').addClass("glyphicon glyphicon-trash").appendTo(deleteButton);
         }
+        addCourt.appendTo(courtsSpace)
+    };
+
+
+    var addCourt = function () {
+        $.ajax({
+            url: "../api/courts",
+            method: "POST",
+            data: JSON.stringify({avaliable: 0}),
+            contentType: 'application/json',
+            dataType: 'json',
+            success: function (data) {
+                var newCourt = data.court;
+                courts.push(newUser);
+                localStorage.setItem("courts", users);
+            },
+            error: function (xhr) {
+                console.log("Estoy en fail", xhr)
+            }
+        });
     };
 
     var getConcreteCourt = function (id) {
@@ -256,6 +282,18 @@ var CourtsManagement = function (worker) {
         }
         return result;
     };
+
+    var getIndexFromID = function (id) {
+        var result = 0;
+        var exit = false;
+        while (result <= courts.length && !exit) {
+            if (courts[result].id == id) {
+                exit = true;
+            }
+            result++;
+        }
+        return exit ? result : '';
+    };
     
     var deleteCourt = function (id) {
         $.ajax({
@@ -266,7 +304,7 @@ var CourtsManagement = function (worker) {
                 var index = getIndexFromID(id);
                 courts.splice(index - 1, 1);
                 localStorage.setItem("courts", JSON.stringify(courts));
-                renderUsers();
+                renderCourts();
             },
             error: function (xhr) {
                 console.log(xhr);

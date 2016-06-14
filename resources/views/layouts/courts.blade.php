@@ -7,13 +7,28 @@
             <h1>Courts</h1>
         </header>
         <div class="row" id="courts-space">
-
-
+            <div class="col-xs-6" id="add-court">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3>Add Court</h3>
+                    </div>
+                    <table class="table table-bordered court">
+                        <tr>
+                            <td><span class="glyphicon glyphicon-user"></span></td>
+                            <td><span class="glyphicon glyphicon-user"></span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="glyphicon glyphicon-user"></span></td>
+                            <td><span class="glyphicon glyphicon-user"></span></td>
+                        </tr>
+                    </table>
+                    <div class="panel-footer">
+                        <button id="add" type="button" class="btn btn-primary center"><span
+                                    class="glyphicon glyphicon-plus"></span></button>
+                    </div>
+                </div>
+            </div>
         </div>
-
-            <form class="form-group">
-                <button type="submit" class="btn btn-primary">Añadir pista</button>
-            </form>
 
 
     </article>
@@ -22,7 +37,8 @@
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">Delete Court</h4>
                 </div>
                 <div class="modal-body">

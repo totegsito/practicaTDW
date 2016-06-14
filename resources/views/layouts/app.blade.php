@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="{{asset("css/bootstrap.min.css")}}">
+    <link rel="stylesheet" href="{{asset("styles/bootstrap.min.css")}}">
     <link rel="stylesheet" href="{{asset("css/all.css")}}">
     {{-- <link href="{{ elixir('css/app.css') }}" rel="stylesheet"> --}}
 
@@ -87,7 +87,6 @@
 
 @yield('content')
 
-<!--<script src="{{ asset('vendor/angular.js') }}"></script>-->
 
 <!-- JavaScripts -->
 <script src="{{ asset('js/ajax_calls.js') }}"></script>
