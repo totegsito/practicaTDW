@@ -2,15 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9c8b0ce7-6697-4383-ad03-0d81faea7961" name="Default" comment="Assets">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/js/bootstrap.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/js/jquery-2.2.4.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/styles/bootstrap.min.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/assets/css/bootstrap.min.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gulpfile.js" afterPath="$PROJECT_DIR$/gulpfile.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/admin.js" afterPath="$PROJECT_DIR$/public/js/admin.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/layouts/app.blade.php" afterPath="$PROJECT_DIR$/resources/views/layouts/app.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/layouts/courts.blade.php" afterPath="$PROJECT_DIR$/resources/views/layouts/courts.blade.php" />
     </list>
     <ignored path="practicaPHP.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -1605,7 +1597,7 @@
       <workItem from="1465804673120" duration="35000" />
       <workItem from="1465804832716" duration="13221000" />
       <workItem from="1465830864749" duration="5774000" />
-      <workItem from="1465890200815" duration="560000" />
+      <workItem from="1465890200815" duration="711000" />
     </task>
     <task id="LOCAL-00001" summary="Admin de pistas y de usuarios terminado">
       <created>1464873409671</created>
@@ -1628,11 +1620,18 @@
       <option name="project" value="LOCAL" />
       <updated>1465835852601</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Assets">
+      <created>1465890799181</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1465890799181</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="272139000" />
+    <option name="totallyTimeSpent" value="272290000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
