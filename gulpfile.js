@@ -15,6 +15,9 @@ elixir(function(mix) {
     mix.sass('app.scss');
     mix.scripts([
     ]);
+    mix.browserSync({
+        proxy: "laravel.dev"
+    });
     mix.styles([
        'app.css', 
         'bootstrap.min.css'
