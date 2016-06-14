@@ -51,4 +51,6 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+
+    <script src="{{asset("js/admin-courts.js")}}"></script>
 @endsection

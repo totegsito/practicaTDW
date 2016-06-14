@@ -2,12 +2,16 @@
 
 @section('management-content')
 
-    <article class="panel panel-primary" ng-controller="UsersController">
+    <div class="alert alert-success hidden" role="alert" id="alert">
+        {{--<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>--}}
+
+    </div>
+    <article class="panel panel-primary">
         <header class="panel-heading">
             <h1>Users</h1>
         </header>
         <div class="table-responsive">
-            <h1></h1>
+
             <table class="table table-striped" id="users-table">
 
             </table>
@@ -130,4 +134,6 @@
             </div>
         </div>
     </div>
+
+    <script src="{{asset("js/admin-users.js")}}"></script>
 @endsection

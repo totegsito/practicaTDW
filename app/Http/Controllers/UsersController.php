@@ -133,7 +133,7 @@ class UsersController extends Controller
             if($newUser){
 
                 $newUser->update($request->except('id'));
-                return response()->json(['code' => 200, 'message' => 'Usuario actualizado correctamente'], 200);
+                return response()->json(['code' => 200, 'message' => 'Usuario actualizado correctamente', 'user' =>$newUser], 200);
             }else{
                 return response()->json(['code' => 404, 'error' => 'No se encuentra el id', "id"=>$id], 404);
             }
