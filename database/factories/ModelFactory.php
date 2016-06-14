@@ -13,12 +13,17 @@
 
 $factory->define(App\Users::class, function (Faker\Generator $faker) {
     return [
-        'name' => $faker->username,
+        'name' => $faker->userName,
         'email' => $faker->safeEmail,
         'telephone' => $faker->phoneNumber,
         'firstname'=> $faker->name,
         'surname' => $faker->word,
-        'password' => bcrypt(str_random(10)),
-        'remember_token' => str_random(10),
+        'password' => bcrypt(str_random(10))
+    ];
+});
+
+$factory->define(App\Court::class, function (Faker\Generator $faker){
+    return [
+        'avaliable' => $faker->boolean(90),
     ];
 });

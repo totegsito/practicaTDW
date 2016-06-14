@@ -5,12 +5,11 @@ var CourtsManagement = function (worker) {
     var init = function () {
         if (localStorage.courts != undefined) {
             courts = $.parseJSON(localStorage.getItem("courts")).courts;
-
         }
         // Para reducir la carga inicial del navegador al pedir la primera petición
         // a la api se ha utilizado un web worker.
         setInterval(worker.postMessage({url: "api/courts"}), 60000);
-        //worker.postMessage({url: "api/users"});
+        //worker.postMessage({url: "api/courts"});
         worker.addEventListener('message', function (e) {
             localStorage.setItem("courts", e.data);
             courts = $.parseJSON(e.data).courts;
@@ -50,7 +49,7 @@ var CourtsManagement = function (worker) {
             });
         });
 
-        $('#add-court').on("click", '#add', function (event) {
+        $('#courts-space').on("click", '#add', function (event) {
             console.log("Here I am");
             addCourt();
         });
@@ -93,9 +92,11 @@ var CourtsManagement = function (worker) {
             contentType: 'application/json',
             dataType: 'json',
             success: function (data) {
+                console.log("Nueva pista");
                 var newCourt = data.court;
-                courts.push(newUser);
-                localStorage.setItem("courts", users);
+                courts.push(newCourt);
+                localStorage.setItem("courts", JSON.stringify(courts));
+                renderCourts();
             },
             error: function (xhr) {
                 console.log("Estoy en fail", xhr)

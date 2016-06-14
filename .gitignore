@@ -198,7 +198,6 @@ bootstrap/cache/
 */Entity/*~
 .idea/composerJson.xml
 composer.phar
-database/seeds/CourtsTableSeeder.php
 public/css/
 public/js/all.js
 public/js/all.js.map
