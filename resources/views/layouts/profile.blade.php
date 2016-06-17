@@ -3,39 +3,37 @@
 @section('management-content')
 
     <article class="panel panel-primary">
-
-
         <header class="panel-heading">Mi Perfil</header>
-        <main class="panel-body" ng-controller="UsersController">
-            <form class="form-horizontal col-sm-12 row" ng-init="getConcreteUser({{ Auth::user()->id}})">
+        <main class="panel-body">
+            <form class="form-horizontal col-sm-12 row" id="form-user" data-user="{{Auth::user()->id}}">
                 <div class="form-group col-md-12">
                     <label for="showName" class="control-label">Usuario</label>
-                    <p class="form-control-static" id="showName"><% concreteUser.name %></p>
+                    <p class="form-control-static" id="showName"></p>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="showEmail" class="control-label">Email</label>
-                    <p class="form-control-static" id="showEmail"><% concreteUser.email %></p>
+                    <p class="form-control-static" id="showEmail"></p>
                 </div>
 
                 <div class="form-group col-md-6">
                     <label for="showFirstname" class="control-label">Nombre</label>
-                    <p class="form-control-static" id="showFirstname"><% concreteUser.firstname %></p>
+                    <p class="form-control-static" id="showFirstname"></p>
                 </div>
                 <div class="form-group col-md-6 ">
                     <label for="showSurname" class="control-label">Apellidos</label>
-                    <p class="form-control-static" id="showSurname"><% concreteUser.surname %></p>
+                    <p class="form-control-static" id="showSurname"></p>
                 </div>
 
                 <div class="form-group col-md-6">
                     <label for="showTelephone" class="control-label">Telefono</label>
-                    <p class="form-control-static" id="showTelephone"><% concreteUser.telephone %></p>
+                    <p class="form-control-static" id="showTelephone"></p>
                 </div>
 
 
                 <div class="form-group col-md-6">
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-                        Editar Perfil
+                        Edit Profile
                     </button>
 
                 </div>
@@ -52,7 +50,7 @@
                         </div>
                         <div class="modal-body">
                             <form>
-                                <div class="form-group" ng-class="{'has-error': error.name}">
+                                <div class="form-group">
                                     <label for="inputName" class="control-label">Usuario</label>
                                     <input id="inputName" type="text" class="form-control" ng-model="concreteUser.name">
                                     <span class="help-block" ng-init="aux = concreteUser.name" ng-if="error.name != null">
@@ -96,5 +94,7 @@
     </article>
 
 
+
+    <script src="{{ asset("js/profile-management.js") }}" ></script>
 
 @endsection

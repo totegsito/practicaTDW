@@ -2,12 +2,16 @@ var CourtsManagement = function (worker) {
     var courts = {};
     this.worker = worker;
     var loading = false;
+    var currentId;
 
+    
+    //TODO: Hay que refinar más esta funcionalidad
+    
+    
     var init = function () {
         loading = true;
         if (localStorage.courts != undefined) {
             courts = $.parseJSON(localStorage.getItem("courts")).courts;
-            console.log(courts);
         }
         worker.postMessage({url: "api/courts"});
         //worker.postMessage({url: "api/courts"});
@@ -41,6 +45,7 @@ var CourtsManagement = function (worker) {
             if(!loading){
                 var newCourt = {};
                 var currentCourt = courts[getIndexFromID(currentId)];
+                console.log(Number(!currentCourt["avaliable"]));
                 newCourt["avaliable"] = Number(!currentCourt["avaliable"]);
                 $('#editModal').modal('toggle');
                 updateCourt(currentId, newCourt);
@@ -58,7 +63,7 @@ var CourtsManagement = function (worker) {
             }
         });
 
-        $('#courts-space').on("click", '#add', function (event) {
+        $('body').on("click", '#add', function () {
             if(!loading){
                 addCourt();
             }
@@ -105,6 +110,7 @@ var CourtsManagement = function (worker) {
             success: function (data) {
                 var newCourt = data.court;
                 courts.push(newCourt);
+                refreshCourts();
                 alertSuccess(data.message);
             },
             error: function (xhr) {
@@ -124,13 +130,14 @@ var CourtsManagement = function (worker) {
             success: function (data) {
                 var index = getIndexFromID(id);
                 courts[index] = data.court;
+                console.log(courts[index]);
                 refreshCourts();
                 alertSuccess(data.message);
             },
             error: function (xhr) {
                 alertFail("The court hasn't been updated. Reason: " + JSON.parse(xhr.responseText).error);
             }
-        })
+        });
         loading = false;
     };
 
