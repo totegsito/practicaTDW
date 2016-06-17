@@ -1,57 +1,67 @@
 var CourtsManagement = function (worker) {
     var courts = {};
     this.worker = worker;
+    var loading = false;
 
     var init = function () {
+        loading = true;
         if (localStorage.courts != undefined) {
             courts = $.parseJSON(localStorage.getItem("courts")).courts;
+            console.log(courts);
         }
-        // Para reducir la carga inicial del navegador al pedir la primera petición
-        // a la api se ha utilizado un web worker.
-        setInterval(worker.postMessage({url: "api/courts"}), 60000);
+        worker.postMessage({url: "api/courts"});
         //worker.postMessage({url: "api/courts"});
         worker.addEventListener('message', function (e) {
-            localStorage.setItem("courts", e.data);
-            courts = $.parseJSON(e.data).courts;
+            var response = $.parseJSON(e.data);
+            localStorage.setItem("courts", JSON.stringify(response["courts"]));
+            courts = response["courts"];
             renderCourts();
         }, false);
         renderCourts();
         setJQueryEvents();
+        loading = false;
+    };
+
+    var getCourts = function () {
+        return courts;
+    };
+
+    var setCourts = function (newCourts) {
+        courts = newCourts;
     };
 
     var setJQueryEvents = function () {
         $('#editModal').on('show.bs.modal', function (event) {
-            var id = $(event.relatedTarget).data("edit");
-            var court = getConcreteCourt(id);
-
+            currentId = $(event.relatedTarget).data("edit");
+            var court  = getConcreteCourt(currentId);
+            $('#edit-confirm').text(court["avaliable"] ? "disable" : "enable" );
         });
 
-        $('#apply-edit').on("click", function (event) {
-            var newUser = {}, id;
-            id = $('#user-id').val();
-            newUser["name"] = $('#user-username').val();
-            newUser["email"] = $('#user-email').val();
-            newUser["firstname"] = $('#user-name').val();
-            newUser["surname"] = $('#user-surname').val();
-            newUser["telephone"] = $('#user-telephone').val();
-            newUser["enabled"] = $('#user-enabled').prop('checked') == true ? 1 : 0;
-            newUser["roles"] = $('#user-roles').prop('checked') == true ? 1 : 0;
-            $('#editModal').modal('toggle');
-            updateUser(id, newUser);
+        $('#apply-edit').on("click", function () {
+            if(!loading){
+                var newCourt = {};
+                var currentCourt = courts[getIndexFromID(currentId)];
+                newCourt["avaliable"] = Number(!currentCourt["avaliable"]);
+                $('#editModal').modal('toggle');
+                updateCourt(currentId, newCourt);
+            }
         });
 
         $('#deleteModal').on('show.bs.modal', function (event) {
-            var id = $(event.relatedTarget).data("delete");
-            $('#apply-delete').on('click', {id: id}, function (event) {
-                var id = event.data.id;
+            currentId = $(event.relatedTarget).data("delete");
+        });
+        
+        $('#apply-delete').on('click', {id: currentId}, function (event) {
+            if(!loading){
                 $("#deleteModal").modal('toggle');
-                deleteCourt(id);
-            });
+                deleteCourt(currentId);
+            }
         });
 
         $('#courts-space').on("click", '#add', function (event) {
-            console.log("Here I am");
-            addCourt();
+            if(!loading){
+                addCourt();
+            }
         });
     };
 
@@ -67,7 +77,7 @@ var CourtsManagement = function (worker) {
             var heading = $('<h3></h3>').text("Court " + (Number(court) + 1)).appendTo(panelHeading);
             var tableCourt = $('<table></table>').addClass('table success table-bordered court').appendTo(panel);
             for (var i = 0; i < 2; i++) {
-                var row = $('<tr></tr>').addClass(current.avaliable ? "success" : "danger" ).appendTo(tableCourt);
+                var row = $('<tr></tr>').addClass(Boolean(courts[court]["avaliable"]) ? "success" : "danger" ).appendTo(tableCourt);
                 for (var j = 0; j < 2; j++) {
                     var cell = $('<td></td>').appendTo(row);
                     var cellText = $('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>').appendTo(cell);
@@ -85,6 +95,7 @@ var CourtsManagement = function (worker) {
 
 
     var addCourt = function () {
+        loading = true;
         $.ajax({
             url: "../api/courts",
             method: "POST",
@@ -92,16 +103,35 @@ var CourtsManagement = function (worker) {
             contentType: 'application/json',
             dataType: 'json',
             success: function (data) {
-                console.log("Nueva pista");
                 var newCourt = data.court;
                 courts.push(newCourt);
-                localStorage.setItem("courts", JSON.stringify(courts));
-                renderCourts();
+                alertSuccess(data.message);
             },
             error: function (xhr) {
-                console.log("Estoy en fail", xhr)
+                alertFail("Court couldn't be created. Reason: " + JSON.parse(xhr.responseText).error);
             }
         });
+        loading = false;
+    };
+
+    var updateCourt = function(id, data) {
+        loading = true;
+        console.log("estoy enviando: " + JSON.stringify(data));
+        $.ajax({
+            url: "../api/courts/" + id,
+            method: "PUT",
+            data: data,
+            success: function (data) {
+                var index = getIndexFromID(id);
+                courts[index] = data.court;
+                refreshCourts();
+                alertSuccess(data.message);
+            },
+            error: function (xhr) {
+                alertFail("The court hasn't been updated. Reason: " + JSON.parse(xhr.responseText).error);
+            }
+        })
+        loading = false;
     };
 
     var getConcreteCourt = function (id) {
@@ -115,35 +145,47 @@ var CourtsManagement = function (worker) {
     };
 
     var alertSuccess = function (message) {
-        $('#alert').addClass("alert-success").removeClass('alert-danger');
+        $('#alert').addClass("alert-success").removeClass('alert-danger').removeClass("hidden").text(message);
+    };
+
+    var alertFail = function (message) {
+        $('#alert').addClass("alert-danger").removeClass('alert-success').removeClass("hidden").text(message);
     };
 
     var getIndexFromID = function (id) {
         var result = 0;
         var exit = false;
         while (result <= courts.length && !exit) {
-            if (courts[result].id == id) {
+            if (courts[result]["id"] == id) {
                 exit = true;
+            }else{
+                result++;
             }
-            result++;
         }
         return exit ? result : '';
     };
 
+    var refreshCourts = function () {
+        localStorage.setItem("courts", JSON.stringify(courts));
+        renderCourts();
+    };
+
     var deleteCourt = function (id) {
+        loading = true;
         $.ajax({
             url: "../api/courts/" + id,
             method: "DELETE",
             success: function (data) {
                 var index = getIndexFromID(id);
                 courts.splice(index - 1, 1);
-                localStorage.setItem("courts", JSON.stringify(courts));
-                renderCourts();
+                refreshCourts();
+                alertSuccess("Court removed successfully");
             },
             error: function (xhr) {
-                console.log(xhr);
+                alertFail("Court hasn't been removed. Reason: " + JSON.parse(xhr.responseText).error);
             }
         });
+        loading = false;
     };
 
 

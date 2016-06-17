@@ -2,18 +2,16 @@ var UsersManagement = function (worker) {
 
     this.worker = worker;
     var users = {};
+    var currentId;
 
     var init = function () {
         if (localStorage.users != undefined) {
             users = $.parseJSON(localStorage.getItem("users")).users;
         }
-        // Para reducir la carga inicial del navegador al pedir la primera petición
-        // a la api se ha utilizado un web worker.
-        setInterval(worker.postMessage({url: "api/users"}), 60000);
-        //worker.postMessage({url: "api/users"});
+        worker.postMessage({url: "api/users"});
         worker.addEventListener('message', function (e) {
-            localStorage.setItem("users", e.data);
             users = $.parseJSON(e.data).users;
+            localStorage.setItem("users", JSON.stringify(users));
             renderUsers();
         }, false);
         renderUsers();
@@ -45,18 +43,22 @@ var UsersManagement = function (worker) {
             newUser["telephone"] = $('#user-telephone').val();
             newUser["enabled"] = $('#user-enabled').prop('checked') == true ? 1 : 0;
             newUser["roles"] = $('#user-roles').prop('checked') == true ? 1 : 0;
+            $('#editModal').modal('toggle');
             updateUser(id, newUser);
         });
 
         $('#deleteModal').on('show.bs.modal', function (event) {
-            var id = $(event.relatedTarget).data("delete");
-            $('#apply-delete').on('click', {id: id}, function (event) {
-                var id = event.data.id;
-                deleteUser(id);
-            });
+            currentId = $(event.relatedTarget).data("delete");
+
+        });
+        
+        $('body').on('click', '#apply-delete', function (event) {
+            console.log(currentId);
+            $("#deleteModal").modal('toggle');
+            deleteUser(currentId);
         });
 
-        $('#add-user').on("click", function (event) {
+        $('#add-user').on("click", function () {
             var newUser = {};
             newUser["name"] = $('#newUser').val();
             newUser["email"] = $('#newEmail').val();
@@ -70,19 +72,9 @@ var UsersManagement = function (worker) {
 
 
     var renderUsers = function () {
-        var table = $("#users-table");
+        var table = $("#users-table tbody");
         table.empty();
-        table.append('<tr>' +
-            '<th>Id</th>' +
-            '<th>Username</th>' +
-            '<th>Email</th>' +
-            '<th>Name</th>' +
-            '<th>Surname</th>' +
-            '<th>Telephone</th>' +
-            '<th>Enabled</th>' +
-            '<th>Role</th>' +
-            '<th>Options</th>' +
-            '</tr>');
+        table.append();
         for (var user in users) {
             var current = users[user];
             var row = $('<tr></tr>');
@@ -109,7 +101,7 @@ var UsersManagement = function (worker) {
         var result = 0;
         var salir = false;
         while (result <= users.length && !salir) {
-            if (users[result].id == id) {
+            if (users[result]["id"] == id) {
                 salir = true;
             }else{
                 result++;
@@ -132,7 +124,7 @@ var UsersManagement = function (worker) {
                 refreshUsers();
             },
             error: function (xhr) {
-                alertFail("No se ha podido crear el usuario. Problema: " + JSON.parse(xhr.responseText).error);
+                alertFail("User couldn't be created. Reason: " + JSON.parse(xhr.responseText).error);
             }
         });
     };
@@ -150,38 +142,35 @@ var UsersManagement = function (worker) {
         renderUsers();
     };
 
-    var updateUser = function (id, data) {
+    var updateUser = function(id, data) {
         $.ajax({
             url: "../api/users/" + id,
             method: "PUT",
             data: data,
             success: function (data) {
-                $('#editModal').modal('toggle');
                 var index = getIndexFromID(id);
                 users[index] = data.user;
                 refreshUsers();
                 alertSuccess(data.message);
             },
             error: function (xhr) {
-                alertFail("No se ha podido actualizar el usuario. Problema: " + JSON.parse(xhr.responseText).error);
-
+                alertFail("The user hasn't been updated. Reason: " + JSON.parse(xhr.responseText).error);
             }
         })
     };
 
-    var deleteUser = function (id) {
+    var deleteUser = function(id) {
         $.ajax({
             url: "../api/users/" + id,
             method: "DELETE",
-            success: function (data) {
-                $("#deleteModal").modal('toggle');
+            success: function (response) {
                 var index = getIndexFromID(id);
                 users.splice(index, 1);
-                alertSuccess(data.message);
+                alertSuccess("User removed successfully");
                 refreshUsers();
             },
             error: function (xhr) {
-                alertFail("No se ha podido eliminar el usuario. Problema: " + JSON.parse(xhr.responseText).error);
+                alertFail("The user hasn't been removed. Reason: " + JSON.parse(xhr.responseText).error);
             }
         });
     };

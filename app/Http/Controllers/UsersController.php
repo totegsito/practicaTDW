@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 
 use App\Users;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -15,7 +14,6 @@ use Illuminate\Foundation\Auth\Access\AuthorizesResources;
 
 use App\Http\Requests;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Auth;
 
 
 class UsersController extends Controller
@@ -37,7 +35,7 @@ class UsersController extends Controller
         if (Users::all() != null)
             return response()->json(['code' => 200, 'users' => Users::all()], 200);
         else
-            return response()->json(['code' => 404, 'error' => 'No existen usuarios'], 404);
+            return response()->json(['code' => 404, 'error' => "Users not found"], 404);
     }
 
 
@@ -64,24 +62,24 @@ class UsersController extends Controller
             $message = $validator->errors();
             if($message->has("name")){
                 if($request->input("name")!=null)
-                    return response()->json(["code"=>400, "error"=>"Nombre de usuario ya existente", "name"=>$request->input('name')], 400);
+                    return response()->json(["code"=>400, "error"=>"Username already exists", "name"=>$request->input('name')], 400);
                 else
-                    return response()->json(["code"=>422, "error"=>"El usuario no puede estar vacío"], 422);
+                    return response()->json(["code"=>422, "error"=>"Empty username is not allowed"], 422);
             }elseif ($message->has('email')){
                 if($request->input("email")!=null){
-                    return response()->json(["code"=>400, "error"=>"Email de usuario ya existe", "email"=>$request->input('email')], 400);
+                    return response()->json(["code"=>400, "error"=>"Email already exists", "email"=>$request->input('email')], 400);
                 }else{
-                    return response()->json(["code"=>422, "error"=>"El email no puede estar vacío"], 422);
+                    return response()->json(["code"=>422, "error"=>"Empty email is not allowed"], 422);
                 }
             }elseif($message->has('password'))
-                return response()->json(['code'=>422, 'error'=>"La contraseña no puede estar vacía"], 422);
+                return response()->json(['code'=>422, 'error'=>"Empty password is not allowed"], 422);
         }
 
         $newUser = Users::create($request->all());
         $newUser->password = bcrypt($request->input('password'));
         $newUser->save();
 
-        $response = \Illuminate\Support\Facades\Response::make(json_encode(["code" => 201, "message" => "Usuario creado correctamente", "user"=> $newUser]), 201)->header('Location', 'http://laravel.dev/api/users/' . $newUser->id)->header('Content-Type', 'application/json');
+        $response = \Illuminate\Support\Facades\Response::make(json_encode(["code" => 201, "message" => "User successfully created", "user"=> $newUser]), 201)->header('Location', 'http://laravel.dev/api/users/' . $newUser->id)->header('Content-Type', 'application/json');
         return $response;
     }
 
@@ -98,7 +96,7 @@ class UsersController extends Controller
             $user = Users::findOrFail($id);
             return response()->json(['code' => 200, 'user' => $user], 200);
         } catch (ModelNotFoundException $ex) {
-            return response()->json(['errors' => array(['code' => 404, 'error' => 'No se encuentra id', "id"=>$id])], 404);
+            return response()->json(['errors' => array(['code' => 404, 'error' => 'Id not found', "id"=>$id])], 404);
         }
     }
 
@@ -122,9 +120,9 @@ class UsersController extends Controller
             $message = $validator->errors();
 
             if($message->has("name")){
-                return response()->json(["code"=>400, "error"=>"Nombre de usuario ya existe", "name"=>$request->input('name')], 400);
+                return response()->json(["code"=>400, "error"=>"Username already exists", "name"=>$request->input('name')], 400);
             }elseif ($message->has('email')){
-                return response()->json(["code"=>400, "error"=>"Email de usuario ya existe", "email"=>$request->input('email')], 400);
+                return response()->json(["code"=>400, "error"=>"Email already exists", "email"=>$request->input('email')], 400);
             }else
             return response()->json(['code'=>400, 'error'=>$message], 400);
         }else{
@@ -133,30 +131,11 @@ class UsersController extends Controller
             if($newUser){
 
                 $newUser->update($request->except('id'));
-                return response()->json(['code' => 200, 'message' => 'Usuario actualizado correctamente', 'user' =>$newUser], 200);
+                return response()->json(['code' => 200, 'message' => 'User successfully updated', 'user' =>$newUser], 200);
             }else{
-                return response()->json(['code' => 404, 'error' => 'No se encuentra el id', "id"=>$id], 404);
+                return response()->json(['code' => 404, 'error' => 'Id not found', "id"=>$id], 404);
             }
         }
-        
-
-        /*try {
-
-            $user = Users::findOrFail($id);
-            $user->name = $request->input('name');
-            $user->email = $request->input('email');
-            if($request->input('password')!=null)
-                $user->password = $request->input('password');
-            $user->enabled = $request->input('enabled');
-            $user->roles = $request->input('roles');
-            $user->save();
-            return response()->json(['code' => 200, 'message' => 'Usuario actualizado correctamente'], 200);
-
-        } catch (ModelNotFoundException $ex) {
-            return response()->json(['code' => 404, 'message' => 'No se encuentra el usuario con id '.$id], 404);*/
-        /*} catch (QueryException $ex) {
-            return response()->json(['code' => 400, 'message' => 'Usuario o email ya existe'], 400);
-        }*/
     }
 
     /**
@@ -170,9 +149,9 @@ class UsersController extends Controller
         try {
             $user = Users::findOrFail($id);
             $user->delete();
-            return response()->json(['code' => 204, 'message' => 'Se ha eliminado el usuario correctamente'], 204);
+            return response()->json(['code' => 204, 'message' => 'User removed successfully'], 204);
         } catch (ModelNotFoundException $ex) {
-            return response()->json(['errors' => array(['code' => 404, 'error' => 'No se encuentra el id', "id"=>$id])], 404);
+            return response()->json(['errors' => array(['code' => 404, 'error' => 'Id not found', "id"=>$id])], 404);
         }
     }
     /**

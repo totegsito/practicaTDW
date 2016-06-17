@@ -10,6 +10,7 @@ use Illuminate\Http\Response;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesResources;
+use Illuminate\Support\Facades\Validator;
 
 
 use App\Http\Requests;
@@ -79,18 +80,26 @@ class CourtsController extends Controller
     public function update(Request $request, $id)
     {
 
-        $this->validate($request, [
+        $validator = Validator::make($request->all(), [
             'avaliable' => 'required|boolean',
         ]);
-        try {
 
-            $court = Court::findOrFail($id);
-            $court->avaliable = $request->input('avaliable');
-            $court->save();
-            return response()->json(['code' => 200, 'message' => 'Pista actualizada correctamente', 'court' => $court], 200);
+        if($validator->fails()){
+            $message = $validator->errors();
 
-        } catch (ModelNotFoundException $ex) {
-            return response()->json(['code' => 404, 'error' => 'No se encuentra la pista', 'id'=>$id], 404);
+            if($message->has("avaliable")){
+                return response()->json(["code"=>400, "error"=>"Avaliable is required", "avaliable"=>$request->input('avaliable')], 400);
+            }else
+                return response()->json(['code'=>400, 'error'=>$message], 400);
+        }else{
+
+            $newCourt = Court::find($id);
+            if($newCourt){
+                $newCourt->update($request->except('id'));
+                return response()->json(['code' => 200, 'message' => 'Court successfully updated', 'court' =>$newCourt], 200);
+            }else{
+                return response()->json(['code' => 404, 'error' => 'Id not found', "id"=>$id], 404);
+            }
         }
     }
 

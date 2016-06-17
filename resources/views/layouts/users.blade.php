@@ -13,7 +13,19 @@
         <div class="table-responsive">
 
             <table class="table table-striped" id="users-table">
-
+                <thead>
+                <tr><th>Id</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Telephone</th>
+                    <th>Enabled</th>
+                    <th>Role</th>
+                    <th>Options</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
             </table>
         </div>
         <footer class="panel-footer">
