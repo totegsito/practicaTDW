@@ -2,6 +2,10 @@
 
 @section('management-content')
 
+    <div class="alert alert-success hidden" role="alert" id="alert">
+        {{--<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>--}}
+
+    </div>
     <article class="panel panel-primary">
         <header class="panel-heading">Mi Perfil</header>
         <main class="panel-body">
@@ -46,44 +50,47 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel">Editar Perfil</h4>
+                            <h4 class="modal-title" id="myModalLabel">Edit Profile</h4>
                         </div>
                         <div class="modal-body">
                             <form>
                                 <div class="form-group">
-                                    <label for="inputName" class="control-label">Usuario</label>
-                                    <input id="inputName" type="text" class="form-control" ng-model="concreteUser.name">
-                                    <span class="help-block" ng-init="aux = concreteUser.name" ng-if="error.name != null">
-                                        <strong><% "El nombre " + aux + " ya está en uso" %></strong>
+                                    <label for="inputName" class="control-label">Username</label>
+                                    <input id="inputName" type="text" class="form-control">
+                                    <span class="help-block hidden">
+                                        <strong>Username already exists</strong>
                                     </span>
                                 </div>
-                                <div class="form-group" ng-class="{'has-error': error.email}">
+                                <div class="form-group">
                                     <label for="inputEmail" class="control-label">Email</label>
-                                    <input id="inputEmail" type="email" class="form-control" ng-model="concreteUser.email">
-                                    <span class="help-block" ng-init="aux = concreteUser.email" ng-if="error.email != null">
-                                        <strong><% "El email " + aux + " ya está en uso" %></strong>
+                                    <input id="inputEmail" type="email" class="form-control">
+                                    <span class="help-block hidden">
+                                        <strong>Email already exists</strong>
                                     </span>
                                 </div>
                                 <div class="form-group">
-                                    <label for="inputFirstname" class="control-label">Nombre</label>
-                                    <input id="inputFirstname" type="text" class="form-control" ng-model="concreteUser.firstname">
+                                    <label for="inputFirstname" class="control-label">Name</label>
+                                    <input id="inputFirstname" type="text" class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label for="inputLastname" class="control-label">Apellidos</label>
-                                    <input id="inputLastname" type="text" class="form-control" ng-model="concreteUser.surname">
+                                    <label for="inputLastname" class="control-label">Surname</label>
+                                    <input id="inputLastname" type="text" class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label for="inputEmail" class="control-label">Teléfono</label>
-                                    <input id="inputEmail" type="tel" class="form-control" ng-model="concreteUser.telephone">
+                                    <label for="inputTelephone" class="control-label">Telephone</label>
+                                    <input id="inputTelephone" type="tel" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputPassword" class="control-label">Password</label>
+                                    <input id="inputPassword" type="password" class="form-control">
+                                    <label for="confirmPassword" class="control-label">Confirm Password</label>
+                                    <input id="confimPassword" type="password" class="form-control">
                                 </div>
                             </form>
                         </div>
-                        <div class="modal-footer" ng-class="{'has-success': success}">
-                            <button type="button" ng-hide="!success" ng-show="success" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                            <button type="button" class="btn btn-primary" ng-click="updateUser(concreteUser)">Guardar Cambios</button>
-                            <span class="help-block" ng-if="success">
-                                        <strong>Perfil modificado correctamente</strong>
-                                    </span>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
                         </div>
                     </div>
                 </div>

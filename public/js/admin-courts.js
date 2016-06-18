@@ -26,14 +26,6 @@ var CourtsManagement = function (worker) {
         loading = false;
     };
 
-    var getCourts = function () {
-        return courts;
-    };
-
-    var setCourts = function (newCourts) {
-        courts = newCourts;
-    };
-
     var setJQueryEvents = function () {
         $('#editModal').on('show.bs.modal', function (event) {
             currentId = $(event.relatedTarget).data("edit");

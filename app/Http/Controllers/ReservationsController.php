@@ -3,25 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Reservation;
-use App\Court;
-use App\Users;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesResources;
 
 use App\Http\Requests;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Validator;
 
 
 class ReservationsController extends Controller
 {
+
+    use AuthorizesRequests, AuthorizesResources, DispatchesJobs, ValidatesRequests;
 
     public function __construct(){
         $this->middleware('auth.basic', ['show', 'index', 'store', 'update', 'destroy']);
