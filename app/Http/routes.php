@@ -36,6 +36,12 @@ Route::group(['middleware'=>'auth.basic'], function(){
            return view('layouts.profile', ["id"=>Auth::user()->id]);
        });
    }) ;
+
+    Route::group(['prefix'=>'user'],function (){
+        Route::get('/', function (){
+            return view('layouts.user');
+        });
+    });
 });;
 
 Route::auth();
