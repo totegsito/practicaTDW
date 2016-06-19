@@ -1,7 +1,6 @@
 @extends('layouts.management')
 
 @section('management-content')
-
     <div class="alert alert-success hidden" role="alert" id="alert">
         {{--<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>--}}
 
@@ -9,9 +8,9 @@
     <article class="panel panel-primary">
         <header class="panel-heading">Mi Perfil</header>
         <main class="panel-body">
-            <form class="form-horizontal col-sm-12 row" id="form-user" data-user="{{Auth::user()->id}}">
+            <form class="form-horizontal col-sm-12 row" id="form-user" data-user="{{ $id }}">
                 <div class="form-group col-md-12">
-                    <label for="showName" class="control-label">Usuario</label>
+                    <label for="showName" class="control-label">Usernane</label>
                     <p class="form-control-static" id="showName"></p>
                 </div>
                 <div class="form-group col-md-6">
@@ -20,26 +19,23 @@
                 </div>
 
                 <div class="form-group col-md-6">
-                    <label for="showFirstname" class="control-label">Nombre</label>
+                    <label for="showFirstname" class="control-label">Name</label>
                     <p class="form-control-static" id="showFirstname"></p>
                 </div>
                 <div class="form-group col-md-6 ">
-                    <label for="showSurname" class="control-label">Apellidos</label>
+                    <label for="showSurname" class="control-label">Surname</label>
                     <p class="form-control-static" id="showSurname"></p>
                 </div>
 
                 <div class="form-group col-md-6">
-                    <label for="showTelephone" class="control-label">Telefono</label>
+                    <label for="showTelephone" class="control-label">Telephone</label>
                     <p class="form-control-static" id="showTelephone"></p>
                 </div>
-
-
                 <div class="form-group col-md-6">
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
                         Edit Profile
                     </button>
-
                 </div>
 
 
@@ -53,6 +49,9 @@
                             <h4 class="modal-title" id="myModalLabel">Edit Profile</h4>
                         </div>
                         <div class="modal-body">
+
+                            {!! Form::model() !!}
+
                             <form>
                                 <div class="form-group">
                                     <label for="inputName" class="control-label">Username</label>
@@ -81,16 +80,13 @@
                                     <input id="inputTelephone" type="tel" class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label for="inputPassword" class="control-label">Password</label>
-                                    <input id="inputPassword" type="password" class="form-control">
-                                    <label for="confirmPassword" class="control-label">Confirm Password</label>
-                                    <input id="confimPassword" type="password" class="form-control">
+
                                 </div>
                             </form>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
+                            <button type="button" class="btn btn-primary" id="apply-changes">Save changes</button>
                         </div>
                     </div>
                 </div>

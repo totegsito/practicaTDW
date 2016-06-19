@@ -19,10 +19,31 @@
                 renderData();
         })
             .fail(function () {
-                alertFail("Connection failed. Try again later.")
+                alertFail("Connection failed. Try again later.");
             console.log("failed");
         });
         renderData();
+        setJQueryEvents();
+    };
+
+    var setJQueryEvents = function () {
+        $('body').on("click", "#apply-changes", function ( event ) {
+
+            var validation = ($('inputPassword').val() === $('confirmPassword'));
+            if(validation){
+                var updatedUser = {}, form = $('#form-user');
+                updatedUser["name"] = $('#inputName').val();
+                updatedUser["email"] = $('#inputemail').val();
+                //TODO: Acabar validación
+                updatedUser["password"] = $('#inputpassword').val();
+                updatedUser["firstname"] = $('#inputFirstname').val();
+                updatedUser["surname"] = $('#inputLastname').val();
+                updatedUser["telephone"] = $('#newTelephone').val();
+                updateUser(updatedUser, form.data("user"));
+            }else{
+                
+            }
+        })
     };
 
 
@@ -40,8 +61,21 @@
         $('#inputTelephone').val(user["telephone"]);
     };
 
-    var updateUser = function (data) {
-        
+    var updateUser = function (data, id) {
+        $.ajax({
+            url: "../api/users/" + id,
+            method: "PUT",
+            data: data,
+            success: function (data) {
+                $('#myModal').modal('toggle');
+                users[index] = data.user;
+                renderData
+                alertSuccess(data.message);
+            },
+            error: function (xhr) {
+                alertFail("The user hasn't been updated. Reason: " + JSON.parse(xhr.responseText).error);
+            }
+        })
     };
 
     var alertSuccess = function (message) {

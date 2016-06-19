@@ -20,8 +20,6 @@ class AdminController extends Controller
         $this->middleware('auth.basic', ['show', 'index', 'store', 'update', 'destroy']);
     }
     
-    
-
     /**
      * Show the application dashboard.
      *

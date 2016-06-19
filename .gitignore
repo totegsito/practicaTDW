@@ -198,7 +198,6 @@ bootstrap/cache/
 */Entity/*~
 .idea/composerJson.xml
 composer.phar
-public/css/
 public/js/all.js
 public/js/all.js.map
 resources/assets/js/angular-locale_es-es.js

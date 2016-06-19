@@ -13,8 +13,11 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="{{asset("styles/bootstrap.min.css")}}">
+    {!! Html::style('css/app.css') !!}
+    {!! Html::style('css/all.css') !!}
+    <link rel="stylesheet" href="{{asset("css/app.css")}}">
     <link rel="stylesheet" href="{{asset("css/all.css")}}">
+
     {{-- <link href="{{ elixir('css/app.css') }}" rel="stylesheet"> --}}
 
 
@@ -25,6 +28,8 @@
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+
+    {!! Html::style('css/app.css') !!}
     <script src="{{asset('js/jquery-2.2.4.min.js')}}"></script>
 
     <style>
@@ -52,7 +57,7 @@
             </button>
 
             <!-- Branding Image -->
-            <a class="navbar-brand" href="{{ url('/') }}">
+            <a class="navbar-brand" href="#">
                 Laravel
             </a>
         </div>
@@ -60,7 +65,7 @@
         <div class="collapse navbar-collapse" id="app-navbar-collapse">
             <!-- Left Side Of Navbar -->
             <ul class="nav navbar-nav">
-                <li><a href="{{ url('/home') }}">Home</a></li>
+                <li><a href="{{ url('/') }}">Home</a></li>
             </ul>
 
             <!-- Right Side Of Navbar -->
@@ -84,13 +89,11 @@
         </div>
     </div>
 </nav>
-
 @yield('content')
 
 
 <!-- JavaScripts -->
-<script src="{{ asset('js/ajax_calls.js') }}"></script>
-<script src="{{asset('js/bootstrap.min.js')}}"></script>
+<script src="{{ asset('js/app.js') }}" ></script>
 
 </body>
 </html>

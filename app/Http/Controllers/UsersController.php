@@ -149,7 +149,7 @@ class UsersController extends Controller
         try {
             $user = Users::findOrFail($id);
             $user->delete();
-            return response()->json(['code' => 204, 'message' => 'User removed successfully'], 204);
+            return response()->json(['code' => 204, 'message' => 'User successfully removed'], 204);
         } catch (ModelNotFoundException $ex) {
             return response()->json(['errors' => array(['code' => 404, 'error' => 'Id not found', "id"=>$id])], 404);
         }

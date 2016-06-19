@@ -22,7 +22,6 @@ class ReservationsController extends Controller
 
     public function __construct(){
         $this->middleware('auth.basic', ['show', 'index', 'store', 'update', 'destroy']);
-
     }
     /**
      * Display a listing of the resource.
@@ -35,18 +34,8 @@ class ReservationsController extends Controller
         if(Reservation::all()!=null){
             return response()->json(["code"=>200, "reservations"=>Reservation::all()], 200);
         }else{
-            return response()->json(["code"=>404, "message"=>"No existen reservas"], 404);    
+            return response()->json(["code"=>404, "message"=>"Reservations not found"], 404);
         }
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -69,14 +58,14 @@ class ReservationsController extends Controller
         if($validator->fails()){
             $message = $validator->errors();
             if($message->has("courts_id")){
-                return response()->json(["code"=>400, "message"=>"Pista no disponible para la hora y dia seleccionados"], 400);
+                return response()->json(["code"=>400, "message"=>"Court not avaliable for selected datetime"], 400);
             }elseif ($message->has("users_id")){
-                return response()->json(["code"=>400, "message"=>"Usuario no activado"], 400);
-            }
-            return response()->json($message,400);
+                return response()->json(["code"=>400, "message"=>"User not enabled"], 400);
+            }else
+                return response()->json(["code"=>400, "message"=>$message],400);
         }else{
             $newReservation = Reservation::create($request->all());
-            return response()->json(["code"=>201, "message"=>"Reserva creada correctamente"],201);
+            return response()->json(["code"=>201, "message"=>"Reservation successfully created","reservation" => $newReservation ],201);
         }
     }
 
@@ -92,7 +81,7 @@ class ReservationsController extends Controller
             $reservation = Reservation::findOrFail($id);
             return response()->json(["code"=>200, "reservation"=>$reservation], 200);
         }catch (ModelNotFoundException $ex){
-            return response()->json(['errors' => array(['code' => 404, 'message' => 'No se encuentra la reserva con id '.$id])], 404);
+            return response()->json(['errors' => array(['code' => 404, 'message' => 'Id not found', 'id'=>$id])], 404);
         }
     }
 
@@ -127,13 +116,13 @@ class ReservationsController extends Controller
         if($validator->fails()){
             $message = $validator->errors();
             if($message->has("courts_id")){
-                return response()->json(["code"=>400, "message"=>"Pista no disponible para la hora y dia seleccionados"], 400);
+                return response()->json(["code"=>400, "message"=>"Court not avaliable for selected datetime"], 400);
             }
             return response()->json($message,400);
         }else{
             $newReservation = Reservation::find($id);
             $newReservation->update($request->except('id'));
-            return response()->json(["code"=>201, "message"=>"Reserva modificada correctamente"],201);
+            return response()->json(["code"=>201, "message"=>"Reservation successfully updated", "reservation"=>$newReservation],201);
         }
     }
 
@@ -148,9 +137,9 @@ class ReservationsController extends Controller
         try {
             $reservation = Reservation::findOrFail($id);
             $reservation->delete();
-            return response()->json(['code' => 204, 'message' => 'Se ha eliminado la reserva correctamente'], 204);
+            return response()->json(['code' => 204, 'message' => 'Reservation successfully removed'], 204);
         } catch (ModelNotFoundException $ex) {
-            return response()->json(['errors' => array(['code' => 404, 'message' => 'No se encuentra la reserva con id '.$id])], 404);
+            return response()->json(['errors' => array(['code' => 404, 'message' => 'Id not found', "id"=>$id])], 404);
         }
     }
 }

@@ -1,3 +1,13 @@
+window.$ = window.jQuery = require('jquery');
+require('bootstrap-sass');
+
+$( document ).ready(function() {
+    console.log($.fn.tooltip.Constructor.VERSION);
+});
+
+
+/*
+
 var app = angular.module('PadelCourts', [], function($interpolateProvider) {
     $interpolateProvider.startSymbol('<%');
     $interpolateProvider.endSymbol('%>');
@@ -176,4 +186,4 @@ app.controller('UsersController', function($scope, $http) {
 
     $scope.initUsers();
 
-});
+});*/

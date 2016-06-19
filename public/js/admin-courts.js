@@ -37,7 +37,6 @@ var CourtsManagement = function (worker) {
             if(!loading){
                 var newCourt = {};
                 var currentCourt = courts[getIndexFromID(currentId)];
-                console.log(Number(!currentCourt["avaliable"]));
                 newCourt["avaliable"] = Number(!currentCourt["avaliable"]);
                 $('#editModal').modal('toggle');
                 updateCourt(currentId, newCourt);
