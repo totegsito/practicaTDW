@@ -50,8 +50,6 @@
                         </div>
                         <div class="modal-body">
 
-                            {!! Form::model() !!}
-
                             <form>
                                 <div class="form-group">
                                     <label for="inputName" class="control-label">Username</label>
@@ -79,9 +77,7 @@
                                     <label for="inputTelephone" class="control-label">Telephone</label>
                                     <input id="inputTelephone" type="tel" class="form-control">
                                 </div>
-                                <div class="form-group">
 
-                                </div>
                             </form>
                         </div>
                         <div class="modal-footer">

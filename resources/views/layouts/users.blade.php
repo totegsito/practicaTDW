@@ -29,7 +29,7 @@
             </table>
         </div>
         <footer class="panel-footer">
-            <form>
+            <form id="addUserForm">
                 <div class="form-group row">
                     <div class="col-lg-6 col-md-6 col-sm-6">
                         <label for="newUser">User</label>

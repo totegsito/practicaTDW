@@ -77,6 +77,8 @@ class UsersController extends Controller
 
         $newUser = Users::create($request->all());
         $newUser->password = bcrypt($request->input('password'));
+        $newUser->enabled = 0;
+        $newUser->roles = 0;
         $newUser->save();
 
         $response = \Illuminate\Support\Facades\Response::make(json_encode(["code" => 201, "message" => "User successfully created", "user"=> $newUser]), 201)->header('Location', 'http://laravel.dev/api/users/' . $newUser->id)->header('Content-Type', 'application/json');

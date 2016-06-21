@@ -28,21 +28,15 @@
 
     var setJQueryEvents = function () {
         $('body').on("click", "#apply-changes", function ( event ) {
-
-            var validation = ($('inputPassword').val() === $('confirmPassword'));
-            if(validation){
                 var updatedUser = {}, form = $('#form-user');
                 updatedUser["name"] = $('#inputName').val();
-                updatedUser["email"] = $('#inputemail').val();
-                //TODO: Acabar validación
-                updatedUser["password"] = $('#inputpassword').val();
+                updatedUser["email"] = $('#inputEmail').val();
                 updatedUser["firstname"] = $('#inputFirstname').val();
                 updatedUser["surname"] = $('#inputLastname').val();
-                updatedUser["telephone"] = $('#newTelephone').val();
+                updatedUser["telephone"] = $('#inputTelephone').val();
+                updatedUser[""]
+                console.log(updatedUser, form.data("user"));
                 updateUser(updatedUser, form.data("user"));
-            }else{
-                
-            }
         })
     };
 
@@ -68,8 +62,8 @@
             data: data,
             success: function (data) {
                 $('#myModal').modal('toggle');
-                users[index] = data.user;
-                renderData
+                console.log(data);
+                user = data.user;
                 alertSuccess(data.message);
             },
             error: function (xhr) {
