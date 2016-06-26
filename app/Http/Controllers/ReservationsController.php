@@ -32,7 +32,7 @@ class ReservationsController extends Controller
     {
         //
         if(Reservation::all()!=null){
-            return response()->json(["code"=>200, "reservations"=>Reservation::all()], 200);
+            return response()->json(["code"=>200, "reservations"=>Reservation::orderBy('reservation_date')->get(    )], 200);
         }else{
             return response()->json(["code"=>404, "error"=>"Reservations not found"], 404);
         }
@@ -40,7 +40,6 @@ class ReservationsController extends Controller
 
     public function getReservationsByReservationDate($reservation_date){
         $reservation = Reservation::orderBy("reservation_date");
-        
         if($reservation){
             return response()->json(["code"=> 200, "reservations" => $reservation], 200);
         }else{
@@ -53,11 +52,11 @@ class ReservationsController extends Controller
 
     public function getReservationsByUserId($user_id, $reservation_date = null){
         if($reservation_date != null){
-            $reservation = Reservation::where("users_id", $user_id) -> where( "reservation_date", $reservation_date) -> get();
+            $reservation = Reservation::where("users_id", $user_id) -> where( "reservation_date", $reservation_date) ->get();
         }else{
-            $reservation = Reservation::orderBy("reservation_date") -> where( "user_id", $user_id);
+            $reservation = Reservation::orderBy("reservation_date") -> where( "users_id", $user_id) -> get();
         }
-        if($reservation){
+        if($reservation->count()>0){
             return response()->json(["code"=>200, "reservations"=>$reservation], 200);
         }else{
             return response()->json(["code"=>404, "error"=>"Reservations not found", "id" => $user_id], 404);

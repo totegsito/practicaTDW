@@ -1,25 +1,24 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register all of the routes for an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the controller to call when that URI is requested.
-|
-*/
 
 
 
 Route::group(['middleware'=>'auth.basic'], function(){
    Route::group(['prefix'=>'api'], function(){
-       Route::resource('users', 'UsersController');
-       Route::options('users', 'UsersController@options');
-       Route::resource('courts', 'CourtsController', ['except'=>['edit', 'create']]);
-       Route::options('courts', 'CourtsController@options');
-       Route::resource('reservations', 'ReservationsController', ['except'=>['edit', 'create']]);
+       Route::group(["prefix"=>"users"], function (){
+           Route::resource('/', 'UsersController', ['except'=>['edit', 'create']]);
+           Route::options('/', 'UsersController@options');
+           Route::put('password/{id}', 'UsersController@changePassword');
+           Route::get('reservations/{id}', "ReservationsController@getReservationsByUserId");
+       });
+       Route::group(["prefix"=>"courts"], function(){
+           Route::resource('/', 'CourtsController', ['except'=>['edit', 'create']]);
+           Route::options('/', 'CourtsController@options');
+       });
+       Route::group(['prefix'=>'reservations'], function (){
+           Route::resource('/', 'ReservationsController', ['except'=>['edit', 'create']]);
+         Route::get('/user/{users_id}/{reservation_date?}', 'ReservationsController@getReservationsByUserId');
+       });
    });
 
    Route::group(['prefix'=>'admin'], function (){
@@ -27,13 +26,16 @@ Route::group(['middleware'=>'auth.basic'], function(){
            return view('admin');
        });
        Route::get('users', function (){
-           return view('layouts.users');
+           return view('layouts.admin.users');
        });
        Route::get('courts', function (){
-           return view('layouts.courts');
+           return view('layouts.admin.courts');
        });
        Route::get('profile', function (){
            return view('layouts.profile', ["id"=>Auth::user()->id]);
+       });
+       Route::get('reservations', function (){
+           return view('layouts.admin.reservations');
        });
    }) ;
 
