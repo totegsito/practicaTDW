@@ -5,16 +5,13 @@
 
 Route::group(['middleware'=>'auth.basic'], function(){
    Route::group(['prefix'=>'api'], function(){
-       Route::group(["prefix"=>"users"], function (){
-           Route::resource('/', 'UsersController', ['except'=>['edit', 'create']]);
-           Route::options('/', 'UsersController@options');
-           Route::put('password/{id}', 'UsersController@changePassword');
-           Route::get('reservations/{id}', "ReservationsController@getReservationsByUserId");
-       });
-       Route::group(["prefix"=>"courts"], function(){
-           Route::resource('/', 'CourtsController', ['except'=>['edit', 'create']]);
-           Route::options('/', 'CourtsController@options');
-       });
+
+       Route::resource('users', 'UsersController', ['except'=>['edit', 'create']]);
+       Route::options('users', 'UsersController@options');
+       Route::put('users/password/{id}', 'UsersController@changePassword');
+       Route::get('users/reservations/{id}', "ReservationsController@getReservationsByUserId");
+       Route::resource('courts', 'CourtsController', ['except'=>['edit', 'create']]);
+       Route::options('courts', 'CourtsController@options');
        Route::group(['prefix'=>'reservations'], function (){
            Route::resource('/', 'ReservationsController', ['except'=>['edit', 'create']]);
          Route::get('/user/{users_id}/{reservation_date?}', 'ReservationsController@getReservationsByUserId');
