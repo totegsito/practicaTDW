@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 
 use App\Users;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -14,6 +13,8 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesResources;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -36,7 +37,7 @@ class UsersController extends Controller
         if (Users::all() != null)
             return response()->json(['code' => 200, 'users' => Users::all()], 200);
         else
-            return response()->json(['code' => 404, 'message' => 'No existen usuarios'], 404);
+            return response()->json(['code' => 404, 'error' => "Users not found"], 404);
     }
 
 
@@ -47,24 +48,42 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        if(Auth::user()->roles!=1){
-            return response()->json(['code'=>403, 'message'=>'Se necesita rol Admin'], 403);
-        }
-        if (!$request->input('username')) {
-            return response()->json(['code' => 422, 'message' => trans('validation.required', ["attribute" => "username"])], 422);
-        } else if (!$request->input('email')) {
-            return response()->json(['code' => 422, 'message' => trans('validation.required', ["attribute" => "email"])], 422);
-        } else if (!$request->input('password')) {
-            return response()->json(['code' => 422, 'message' => trans('validation.required', ["attribute" => "password"])], 422);
-        } else if (Users::find($request->input('username'))) {
-            return response()->json(['code' => 400, 'message' => 'El usuario ' . $request->input('username') . ' ya existe'], 400);
-        } else if (Users::find($request->input('email'))) {
-            return response()->json(['code' => 400, 'message' => 'El email ' . $request->input('email') . ' ya existe'], 400);
+
+        $validator= Validator::make($request->all(), [
+            'name' => 'required|max:255|unique:users',
+            'email' => 'required|email|max:255|unique:users',
+            'password' => 'required|min:6',
+            'firstname' => 'min:3|max:45',
+            'surname' => 'min:2|max:50',
+            'telephone' => 'max:15',
+            'enabled' => 'boolean',
+            'roles' => 'boolean'
+        ]);
+
+        if($validator->fails()){
+            $message = $validator->errors();
+            if($message->has("name")){
+                if($request->input("name")!=null)
+                    return response()->json(["code"=>400, "error"=>"Username already exists", "name"=>$request->input('name')], 400);
+                else
+                    return response()->json(["code"=>422, "error"=>"Empty username is not allowed"], 422);
+            }elseif ($message->has('email')){
+                if($request->input("email")!=null){
+                    return response()->json(["code"=>400, "error"=>"Email already exists", "email"=>$request->input('email')], 400);
+                }else{
+                    return response()->json(["code"=>422, "error"=>"Empty email is not allowed"], 422);
+                }
+            }elseif($message->has('password'))
+                return response()->json(['code'=>422, 'error'=>"Empty password is not allowed"], 422);
         }
 
         $newUser = Users::create($request->all());
+        $newUser->password = Hash::make($request->input('password'));
+        $newUser->enabled = 0;
+        $newUser->roles = 0;
+        $newUser->save();
 
-        $response = \Illuminate\Support\Facades\Response::make(json_encode(["code" => 201, "message" => "Usuario creado correctamente"]), 201)->header('Location', 'http://laravel.dev/users/' . $newUser->id)->header('Content-Type', 'application/json');
+        $response = \Illuminate\Support\Facades\Response::make(json_encode(["code" => 201, "message" => "User successfully created", "user"=> $newUser]), 201)->header('Location', 'http://laravel.dev/api/users/' . $newUser->id)->header('Content-Type', 'application/json');
         return $response;
     }
 
@@ -81,8 +100,7 @@ class UsersController extends Controller
             $user = Users::findOrFail($id);
             return response()->json(['code' => 200, 'user' => $user], 200);
         } catch (ModelNotFoundException $ex) {
-            return response()->json(['errors' => array(['code' => 404, 'message' => 'No se encuentra el usuario con id '.$id])], 404);
-
+            return response()->json(['errors' => array(['code' => 404, 'error' => 'Id not found', "id"=>$id])], 404);
         }
     }
 
@@ -94,28 +112,54 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:255|alpha_dash|unique:users,name,'.$id,
+            'email' => 'required|email|max:255|unique:users,email,'.$id,
+            'password' => 'min:6',
+            'firstname' => 'min:3|max:45',
+            'surname' => 'min:2|max:50',
+        ]);
 
-        if(!Auth::user()->roles){
-            return response()->json(['code'=>403, 'message'=>'Se necesita rol Admin'], 403);
-        }
-        try {
+        if($validator->fails()){
+            $message = $validator->errors();
 
-            $user = Users::findOrFail($id);
-            $user->username = $request->input('username');
-            $user->email = $request->input('email');
-            $user->password = $request->input('password');
-            $user->enabled = $request->input('enabled');
-            $user->roles = $request->input('roles');
-            if(!$user->username || !$user->email || !$user->password){
-                return response()->json(['code'=>422, 'message'=>'Usuario, email y contraseña no pueden estar vacios'], 422);
+            if($message->has("name")){
+                return response()->json(["code"=>400, "error"=>"Username already exists", "name"=>$request->input('name')], 400);
+            }elseif ($message->has('email')){
+                return response()->json(["code"=>400, "error"=>"Email already exists", "email"=>$request->input('email')], 400);
             }
-            $user->save();
-            return response()->json(['code' => 200, 'message' => 'Usuario actualizado correctamente'], 200);
+            return response()->json(['code'=>400, 'error'=>$message], 400);
+        }else{
+            $newUser = Users::find($id);
+            if($newUser){
+                $newUser->update($request->except('id'));
+                return response()->json(['code' => 200, 'message' => 'User successfully updated', 'user' =>$newUser], 200);
+            }else{
+                return response()->json(['code' => 404, 'error' => 'Id not found', "id"=>$id], 404);
+            }
+        }
+    }
 
-        } catch (ModelNotFoundException $ex) {
-            return response()->json(['code' => 404, 'message' => 'No se encuentra el usuario con id '.$id], 404);
-        } catch (QueryException $ex) {
-            return response()->json(['code' => 401, 'message' => 'Usuario o email ya existe'], 400);
+    public function changePassword(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'oldpassword' => 'required|min:6|alpha_dash',
+            'password' => 'required|min:6|alpha_dash|confirmed',
+        ]);
+        if($validator->fails()){
+            $message = $validator->errors();
+                return response()->json(['code'=>400, 'error'=>$message], 400);
+        }else{
+            $newUser = Users::find($id);
+            if($newUser){
+                if(!Hash::check($request->input('oldpassword'), Auth::user()->password)){
+                    return response()->json(['code'=>400, 'error'=>'Old password do not match our records'], 400);
+                }
+                $newUser->update($request->except('id', 'old_password', 'password_confirmation'));
+                return response()->json(['code' => 200, 'message' => 'User successfully updated', 'user' =>$newUser], 200);
+            }else{
+                return response()->json(['code' => 404, 'error' => 'Id not found', "id"=>$id], 404);
+            }
         }
     }
 
@@ -127,18 +171,13 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        if(!Auth::user()->roles){
-            return response()->json(['code'=>403, 'message'=>'Se necesita rol Admin'], 403);
-        }
         try {
             $user = Users::findOrFail($id);
             $user->delete();
-            return response()->json(['code' => 204, 'message' => 'Se ha eliminado el usuario correctamente'], 204);
+            return response()->json(['code' => 204, 'message' => 'User successfully removed'], 204);
         } catch (ModelNotFoundException $ex) {
-            return response()->json(['errors' => array(['code' => 404, 'message' => 'No se encuentra el usuario con id '.$id])], 404);
-
+            return response()->json(['errors' => array(['code' => 404, 'error' => 'Id not found', "id"=>$id])], 404);
         }
-
     }
     /**
      * Return the allowed methods.
