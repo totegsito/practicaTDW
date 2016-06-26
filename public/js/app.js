@@ -12278,7 +12278,7 @@ app.controller('UsersController', function($scope, $http) {
         });
     };
 
-    $scope.getConcreteUser = function (id) {
+    $scope.getConcreteCourt = function (id) {
         $scope.loading = true;
         $http.get('../api/users/'+id).
         success(function(data, status, headers, config) {

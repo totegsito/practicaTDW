@@ -1,199 +1,210 @@
-$( document ).ready( function ( ) {
+$(document).ready(function () {
     var worker;
-    if ( typeof ( Worker ) !== "undefined" ) {
-        worker = new Worker( "../js/ajax_calls.js" );
+    if (typeof ( Worker ) !== "undefined") {
+        worker = new Worker("../js/ajax_calls.js");
     }
-    var management = new UsersManagement( worker );
+    var management = new UsersManagement(worker);
     var localStorageEnabled = ( typeof ( localStorage ) !== "undefined" );
 
     var loading = false;
 
 
     /*
-    /
-    / Declaración de eventos
-    /
-    */
-    $( '#editModal' ).on( 'show.bs.modal', function ( event ) {
-        var id = $( event.relatedTarget ).data( "edit" );
-        var user = management.getConcreteUser( id );
-        $( '#user-id' ).val( id );
-        $( '#user-username' ).val( user.name );
-        $( '#user-email' ).val( user.email );
-        $( '#user-name' ).val( user.firstname );
-        $( '#user-surname' ).val( user.surname );
-        $( '#user-telephone' ).val( user.telephone );
-        $( '#user-enabled' ).prop( 'checked', user.enabled ? true : false );
-        $( '#user-roles' ).prop( 'checked', user.roles ? true : false );
-    } );
+     /
+     / Declaración de eventos
+     /
+     */
+    $('#editModal').on('show.bs.modal', function (event) {
+        var id = $(event.relatedTarget).data("edit");
+        var user = management.getConcreteUser(id);
+        $('#user-id').val(id);
+        $('#user-username').val(user.name);
+        $('#user-email').val(user.email);
+        $('#user-name').val(user.firstname);
+        $('#user-surname').val(user.surname);
+        $('#user-telephone').val(user.telephone);
+        $('#user-enabled').prop('checked', (user.enabled == 1));
+        $('#user-roles').prop('checked', (user.roles == 1));
+    });
 
-    $( '#apply-edit' ).on( "click", function ( event ) {
+    $('#apply-edit').on("click", function (event) {
         var newUser = {}, id;
-        id = $( '#user-id' ).val( );
-        newUser[ "name" ] = $( '#user-username' ).val( );
-        newUser[ "email" ] = $( '#user-email' ).val( );
-        newUser[ "firstname" ] = $( '#user-name' ).val( );
-        newUser[ "surname" ] = $( '#user-surname' ).val( );
-        newUser[ "telephone" ] = $( '#user-telephone' ).val( );
-        newUser[ "enabled" ] = $( '#user-enabled' ).prop( 'checked' ) == true ? 1 : 0;
-        newUser[ "roles" ] = $( '#user-roles' ).prop( 'checked' ) == true ? 1 : 0;
-        $( '#editModal' ).modal( 'toggle' );
-        updateAJAX( newUser, id );
-    } );
+        id = $('#user-id').val();
+        newUser["name"] = $('#user-username').val();
+        newUser["email"] = $('#user-email').val();
+        newUser["firstname"] = $('#user-name').val();
+        newUser["surname"] = $('#user-surname').val();
+        newUser["telephone"] = $('#user-telephone').val();
+        newUser["enabled"] = $('#user-enabled').prop('checked') == true ? 1 : 0;
+        newUser["roles"] = $('#user-roles').prop('checked') == true ? 1 : 0;
+        $('#editModal').modal('toggle');
+        updateAJAX(newUser, id);
+    });
 
-    $( '#deleteModal' ).on( 'show.bs.modal', function ( event ) {
-        management.currentId = $( event.relatedTarget ).data( "delete" );
-    } );
+    $('#deleteModal').on('show.bs.modal', function (event) {
+        management.currentId = $(event.relatedTarget).data("delete");
+    });
 
-    $( 'body' ).on( 'click', '#apply-delete', function ( ) {
-        $( "#deleteModal" ).modal( 'toggle' );
-        deleteAJAX( management.currentId );
-    } );
+    $('body').on('click', '#apply-delete', function () {
+        $("#deleteModal").modal('toggle');
+        deleteAJAX(management.currentId);
+    });
 
-    $( '#add-user' ).on( "click", function ( ) {
+    $('#add-user').on("click", function () {
         var newUser = {};
-        newUser[ "name" ] = $( '#newUser' ).val( );
-        newUser[ "email" ] = $( '#newEmail' ).val( );
-        newUser[ "password" ] = $( '#newPassword' ).val( );
-        newUser[ "firstname" ] = $( '#newFirstName' ).val( );
-        newUser[ "surname" ] = $( '#newLastName' ).val( );
-        newUser[ "telephone" ] = $( '#newTelephone' ).val( );
-        postAJAX( newUser );
-    } );
+        newUser["name"] = $('#newUser').val();
+        newUser["email"] = $('#newEmail').val();
+        newUser["password"] = $('#newPassword').val();
+        newUser["firstname"] = $('#newFirstName').val();
+        newUser["surname"] = $('#newLastName').val();
+        newUser["telephone"] = $('#newTelephone').val();
+        postAJAX(newUser);
+    });
 
 
     /*
-    /
-    /   Declaración de las llamadas AJAX
-    /
-    */
+     /
+     /   Declaración de las llamadas AJAX
+     /
+     */
 
-    var deleteAJAX = function ( id ) {
-        if( !loading ){
+    var deleteAJAX = function (id) {
+        if (!loading) {
             loading = true;
-            $.ajax( {
+            $.ajax({
                 url: "../api/users/" + id,
                 method: "DELETE",
-                success: function ( ) {
-                    var users = management.getUsers( );
-                    var index = management.getIndexFromID( id );
-                    users.splice( index, 1 );
-                    alertSuccess( "User removed successfully" );
-                    refreshUsers( users );
+                success: function () {
+                    var users = management.getUsers();
+                    var index = management.getIndexFromID(id);
+                    users.splice(index, 1);
+                    alertSuccess("User removed successfully");
+                    refreshUsers(users);
                 },
-                error: function ( xhr ) {
-                    alertFail( "The user hasn't been removed. Reason: " + JSON.parse( xhr.responseText ).error );
+                error: function (xhr) {
+                    alertFail("The user hasn't been removed. Reason: " + JSON.parse(xhr.responseText).error);
                 },
-                complete: function ( ) {
+                complete: function () {
                     loading = false;
                 }
-            } );
+            });
         }
     };
 
-    var postAJAX = function( data ){
-        if( !loading ){
+    var postAJAX = function (data) {
+        if (!loading) {
             loading = true;
-            $.ajax( {
+            $.ajax({
                 url: "../api/users",
                 method: "POST",
-                data: JSON.stringify( data ),
+                data: JSON.stringify(data),
                 contentType: 'application/json',
                 dataType: 'json',
-                success: function ( data ) {
-                    var users = management.getUsers( );
-                    users.push( data[ "user" ] );
-                    alertSuccess( data.message );
-                    refreshUsers( users );
-                    $( '#addUserForm' ).each( function ( ) {
-                        this.reset( );
-                    } );
+                success: function (data) {
+                    var users = management.getUsers();
+                    users.push(data["user"]);
+                    alertSuccess(data.message);
+                    refreshUsers(users);
+                    $('#addUserForm').each(function () {
+                        this.reset();
+                    });
                 },
-                error: function ( xhr ) {
-                    alertFail( "User couldn't be created. Reason: " + JSON.parse( xhr.responseText ).error );
+                error: function (xhr) {
+                    alertFail("User couldn't be created. Reason: " + JSON.parse(xhr.responseText).error);
                 },
-                complete: function ( ) {
+                complete: function () {
                     loading = false;
                 }
-            } );
+            });
         }
     };
 
-    var updateAJAX = function ( data, id ) {
-        if( !loading ){
+    var updateAJAX = function (data, id) {
+        if (!loading) {
             loading = true;
-            $.ajax( {
+            $.ajax({
                 url: "../api/users/" + id,
                 method: "PUT",
                 data: data,
-                success: function ( data ) {
-                    var users = management.getUsers( );
-                    var index = management.getIndexFromID( id );
-                    users[ index ] = data.user;
-                    refreshUsers( users );
-                    alertSuccess( data.message );
+                success: function (data) {
+                    var users = management.getUsers();
+                    var index = management.getIndexFromID(id);
+                    users[index] = data.user;
+                    refreshUsers(users);
+                    alertSuccess(data.message);
                 },
-                error: function ( xhr ) {
-                    alertFail( "The user hasn't been updated. Reason: " + JSON.parse( xhr.responseText ).error );
+                error: function (xhr) {
+                    alertFail("The user hasn't been updated. Reason: " + JSON.parse(xhr.responseText).error);
                 },
-                complete: function ( ) {
+                complete: function () {
                     loading = false;
                 }
-            } );
+            });
         }
     };
 
 
     /*
-    /
-    /   Declaración de las funciones
-    /
-    */
+     /
+     /   Declaración de las funciones
+     /
+     */
 
-    var render = function ( data ) {
-        var table = $( "#users-table tbody" );
-        table.empty( );
-        table.append( );
+    var render = function (data) {
+        var table = $("#users-table tbody");
+        table.empty();
+        table.append();
         var users = data;
-        for ( var user in users ) {
-            var current = users[ user ];
-            var row = $( '<tr></tr>' );
-            row.append( '<td>'+current[ "id" ]+'<td>' );
-            Object.keys( current ).forEach( function ( k ) {
-               if( k !== "id" ){
-                   row.append( '<td>' + current[ k ] + '</td>' );
-               } 
-            } );
-           /* for ( var value in current ) {
-                if( Object.keys( current[ value ] ) !== "id" ){
+        for (var user in users) {
+            var current = users[user];
+            var row = $('<tr></tr>');
+            row.append('<td>' + current["id"] + '</td>');
+            Object.keys(current).forEach(function (k) {
+                var col = $('<td></td>');
+                var foo = current[k];
+                if ( k === "roles" || k === "enabled"){
+                    if( current[ k ] == 1 ){
+                        foo = $('<span class="glyphicon glyphicon-ok"></span>');
+                        col.addClass("success");
+                    }else{
+                        foo = $('<span class="glyphicon glyphicon-remove"></span>');
+                        col.addClass("danger");
+                    }
                 }
-            }*/
-            row.append( '<td><div class="btn-group" role="group"><button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editModal" data-edit="' + users[ user]["id" ] + '"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button><button type="button" class="btn btn-danger"data-toggle="modal" data-target="#deleteModal"  data-delete="' + users[ user]["id" ] + '"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></div></td>' );
-            table.append( row );
+                if( k !== "id"){
+                    col.append(foo);
+                    row.append(col);
+                }
+                /*if ( k != "id" ) {
+                    row.append( '<td>' + foo + '</td>' );
+                }*/
+            });
+            row.append('<td><div class="btn-group" role="group"><button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editModal" data-edit="' + users[user]["id"] + '"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button><button type="button" class="btn btn-danger"data-toggle="modal" data-target="#deleteModal"  data-delete="' + users[user]["id"] + '"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></div></td>');
+            table.append(row);
         }
     };
 
-    var refreshUsers =  function ( data ) {
-        if( localStorageEnabled ){
-            localStorage.setItem( "users", JSON.stringify( data ));
+    var refreshUsers = function (data) {
+        if (localStorageEnabled) {
+            localStorage.setItem("users", JSON.stringify(data));
         }
-        management.setUsers( data );
-        render( management.getUsers( ) );
+        management.setUsers(data);
+        render(management.getUsers());
     };
 
-    var alertSuccess = function ( message ) {
-        $( '#alert' ).addClass( "alert-success" ).removeClass( 'alert-danger' ).removeClass( "hidden" ).text( message );
+    var alertSuccess = function (message) {
+        $('#alert').addClass("alert-success").removeClass('alert-danger').removeClass("hidden").text(message);
     };
 
-    var alertFail = function ( message ) {
-        $( '#alert' ).addClass( "alert-danger" ).removeClass( 'alert-success' ).removeClass( "hidden" ).text( message );
+    var alertFail = function (message) {
+        $('#alert').addClass("alert-danger").removeClass('alert-success').removeClass("hidden").text(message);
     };
 
     /*
-    /
-    /   Código que se ejecuta cada vez que se abre la página
-    /
-    */
+     /
+     /   Código que se ejecuta cada vez que se abre la página
+     /
+     */
 
 
     // Para mejorar la UX he hecho uso de algunas de las APIS de HTML 5
@@ -216,56 +227,60 @@ $( document ).ready( function ( ) {
     // navegadores "antiguos" que no tengan implementadas las nuevas APIs de HTML5 y
     // más concretamente estas dos.
 
-    if ( typeof( localStorage.users ) !== "undefined" && localStorageEnabled ) {
-        management.setUsers( JSON.parse( localStorage.getItem( "users" ) ) );
-        refreshUsers( $.parseJSON( localStorage.getItem( "users" )) );
+    if (typeof( localStorage["users"] ) !== "undefined" && localStorageEnabled) {
+        render($.parseJSON(localStorage.getItem("users")));
     }
 
-    if ( typeof ( Worker ) !== "undefined" ) {
-        worker.postMessage( {url: "api/users"} );
-        worker.addEventListener( 'message', function ( e ) {
-            refreshUsers( $.parseJSON( e.data )[ "users" ] );
-        }, false );
+    loading = true;
+    if (typeof ( Worker ) !== "undefined") {
+
+        worker.postMessage({url: "api/users"});
+        worker.addEventListener('message', function (e) {
+            refreshUsers($.parseJSON(e.data)["users"]);
+            loading = false;
+        }, false);
     } else {
-        $.getJSON( '../api/users', function ( data ) {
-            refreshUsers( data[ "users" ] );
-        } ).fail( function ( ) {
-            alertFail( "Connection failed. Try again later" );
-        } );
+        $.getJSON('../api/users', function (data) {
+            refreshUsers(data["users"]);
+        }).fail(function () {
+            alertFail("Connection failed. Try again later");
+        }).always(function () {
+            loading = false;
+        });
     }
-} );
+});
 
-    /*
-    / Definición del modelo de datos de usuarios.
-    */
+/*
+ / Definición del modelo de datos de usuarios.
+ */
 
-var UsersManagement = function ( ) {
-    this.users = ( localStorage.getItem( "users" ) !== "undefined" ) ? localStorage.getItem( "users" ) : {};
+var UsersManagement = function () {
+    this.users = ( localStorage.getItem("users") !== "undefined" ) ? localStorage.getItem("users") : {};
 };
 
 UsersManagement.prototype = {
     currentId: null,
     constructor: UsersManagement,
-    getUsers: function ( ) {
+    getUsers: function () {
         return this.users;
     },
-    setUsers: function ( users ) {
+    setUsers: function (users) {
         this.users = users;
     },
-    getConcreteUser: function ( id ) {
+    getConcreteUser: function (id) {
         var result = null;
-        for ( var user in this.users ) {
-            if ( this.users[ user ].id == id ) {
-                result = this.users[ user ];
+        for (var user in this.users) {
+            if (this.users[user].id == id) {
+                result = this.users[user];
             }
         }
         return result;
     },
-    getIndexFromID: function ( id ) {
+    getIndexFromID: function (id) {
         var result = 0;
         var salir = false;
-        while ( result <= this.users.length && !salir ) {
-            if ( this.users[ result]["id" ] == id ) {
+        while (result <= this.users.length && !salir) {
+            if (this.users[result]["id"] == id) {
                 salir = true;
             } else {
                 result++;
@@ -278,7 +293,7 @@ UsersManagement.prototype = {
 
 /*
 
- var UsersManagement = function ( worker ) {
+ var CourtsManagement = function ( worker ) {
 
  this.localStorageEnabled = ( typeof ( localStorage ) !== "undefined" );
  this.worker = worker;
@@ -286,7 +301,7 @@ UsersManagement.prototype = {
  this.currentId = null;
 
 
- this.UsersManagement = function ( ) {
+ this.CourtsManagement = function ( ) {
  if ( localStorage.users != undefined && this.localStorageEnabled ) {
  this.users = $.parseJSON( localStorage.getItem( "users" ));
  }
@@ -312,7 +327,7 @@ UsersManagement.prototype = {
  this.setJqueryEvents = function ( ) {
  $( '#editModal' ).on( 'show.bs.modal', function ( event ) {
  var id = $( event.relatedTarget ).data( "edit" );
- var user = getConcreteUser( id );
+ var user = getConcreteCourt( id );
  $( '#user-id' ).val( id );
  $( '#user-username' ).val( user.name );
  $( '#user-email' ).val( user.email );
@@ -376,7 +391,7 @@ UsersManagement.prototype = {
  };
 
 
- this.getConcreteUser = function ( id ) {
+ this.getConcreteCourt = function ( id ) {
  var result = null;
  for ( var user in users ) {
  if ( users[ user ].id == id ) {
@@ -471,7 +486,7 @@ UsersManagement.prototype = {
 
 
 
-/*function UsersManagement( TheWorker ) {
+/*function CourtsManagement( TheWorker ) {
  if ( localStorage.users != undefined && this.localStorageEnabled ) {
  this.users = $.parseJSON( localStorage.getItem( "users" ));
  }

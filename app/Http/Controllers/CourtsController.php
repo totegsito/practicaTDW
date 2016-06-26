@@ -34,7 +34,7 @@ class CourtsController extends Controller
         if (Court::all() != null)
             return response()->json(['code' => 200, 'courts' => Court::all()], 200);
         else
-            return response()->json(['code' => 404, 'error' => 'No existen pistas'], 404);
+            return response()->json(['code' => 404, 'error' => 'Courts object is empty'], 404);
     }
 
 
@@ -49,7 +49,7 @@ class CourtsController extends Controller
 
         $newCourt = Court::create($request->all());
 
-        $response = \Illuminate\Support\Facades\Response::make(json_encode(["code" => 201, "message" => "Pista creada correctamente", "court"=>$newCourt]), 201)->header('Location', 'http://laravel.dev/api/courts' . $newCourt->id)->header('Content-Type', 'application/json');
+        $response = \Illuminate\Support\Facades\Response::make(json_encode(["code" => 201, "message" => "Court created successfully", "court"=>$newCourt]), 201)->header('Location', 'http://laravel.dev/api/courts' . $newCourt->id)->header('Content-Type', 'application/json');
         return $response;
     }
 
@@ -64,9 +64,9 @@ class CourtsController extends Controller
         //
         try {
             $court = Court::findOrFail($id);
-            return response()->json(['code' => 200, 'message'=> 'Pista creada correctamente', 'court' => $court], 200);
+            return response()->json(['code' => 200, 'message'=> 'Court created successfully', 'court' => $court], 200);
         } catch (ModelNotFoundException $ex) {
-            return response()->json(['code' => 404, 'error' => 'No se encuentra la pista', 'id'=>$id], 404);
+            return response()->json(['code' => 404, 'error' => 'Court not found', 'id'=>$id], 404);
 
         }
     }
@@ -96,9 +96,9 @@ class CourtsController extends Controller
             $newCourt = Court::find($id);
             if($newCourt){
                 $newCourt->update($request->except('id'));
-                return response()->json(['code' => 200, 'message' => 'Court successfully updated', 'court' =>$newCourt], 200);
+                return response()->json(['code' => 200, 'message' => 'Court updated successfully', 'court' =>$newCourt], 200);
             }else{
-                return response()->json(['code' => 404, 'error' => 'Id not found', "id"=>$id], 404);
+                return response()->json(['code' => 404, 'error' => 'Court not found', "id"=>$id], 404);
             }
         }
     }
@@ -114,9 +114,9 @@ class CourtsController extends Controller
         try {
             $court = Court::findOrFail($id);
             $court->delete();
-            return response()->json(['code' => 204, 'message' => 'Se ha eliminado la pista correctamente', 'court'=>$court], 204);
+            return response()->json(['code' => 204, 'message' => 'Court removed successfully', 'court'=>$court], 204);
         } catch (ModelNotFoundException $ex) {
-            return response()->json(['code' => 404, 'error' => 'No se encuentra la pista', 'id'=>$id], 404);
+            return response()->json(['code' => 404, 'error' => 'Court not found', 'id'=>$id], 404);
         }
 
     }
