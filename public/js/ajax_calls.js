@@ -40,7 +40,7 @@ function load(method, data, url, callback) {
         }
     }
 
-    xhr.open(method, url, true);
+    xhr.open('GET', url, true);
     xhr.send(data);
 }
 
@@ -63,6 +63,4 @@ self.addEventListener("message", function (event) {
     load(method, data, '../' + event.data.url, function (xhr) {
         self.postMessage(xhr.responseText);
     });
-
-
 }, false);

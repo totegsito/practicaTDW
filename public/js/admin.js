@@ -1,3 +1,4 @@
+/*
 var App = function () {
 
     if (typeof (Worker) !== "undefined") {
@@ -12,4 +13,4 @@ var App = function () {
     }
 };
 
-new App();
+new App();*/

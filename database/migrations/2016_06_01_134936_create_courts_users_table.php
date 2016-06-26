@@ -21,6 +21,7 @@ class CreateCourtsUsersTable extends Migration
             $table->integer('courts_id')->unsigned();
             $table->foreign('courts_id')->references('id')->on('courts')->onDelete('cascade');
             $table->dropForeign('courts_users_courts_id_foreign');
+            $table->string('1st_player');
             $table->string('2nd_player');
             $table->string('3rd_player');
             $table->string('4th_player');

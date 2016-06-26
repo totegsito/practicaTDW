@@ -13,7 +13,9 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesResources;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 
 class UsersController extends Controller
@@ -52,7 +54,7 @@ class UsersController extends Controller
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6',
             'firstname' => 'min:3|max:45',
-            'surname' => 'min:5|max:100',
+            'surname' => 'min:2|max:50',
             'telephone' => 'max:15',
             'enabled' => 'boolean',
             'roles' => 'boolean'
@@ -76,7 +78,9 @@ class UsersController extends Controller
         }
 
         $newUser = Users::create($request->all());
-        $newUser->password = bcrypt($request->input('password'));
+        $newUser->password = Hash::make($request->input('password'));
+        $newUser->enabled = 0;
+        $newUser->roles = 0;
         $newUser->save();
 
         $response = \Illuminate\Support\Facades\Response::make(json_encode(["code" => 201, "message" => "User successfully created", "user"=> $newUser]), 201)->header('Location', 'http://laravel.dev/api/users/' . $newUser->id)->header('Content-Type', 'application/json');
@@ -109,11 +113,11 @@ class UsersController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|max:255|unique:users,name,'.$id,
+            'name' => 'required|max:255|alpha_dash|unique:users,name,'.$id,
             'email' => 'required|email|max:255|unique:users,email,'.$id,
             'password' => 'min:6',
             'firstname' => 'min:3|max:45',
-            'surname' => 'min:5|max:100',
+            'surname' => 'min:2|max:50',
         ]);
 
         if($validator->fails()){
@@ -123,14 +127,35 @@ class UsersController extends Controller
                 return response()->json(["code"=>400, "error"=>"Username already exists", "name"=>$request->input('name')], 400);
             }elseif ($message->has('email')){
                 return response()->json(["code"=>400, "error"=>"Email already exists", "email"=>$request->input('email')], 400);
-            }else
+            }
             return response()->json(['code'=>400, 'error'=>$message], 400);
         }else{
-
             $newUser = Users::find($id);
             if($newUser){
-
                 $newUser->update($request->except('id'));
+                return response()->json(['code' => 200, 'message' => 'User successfully updated', 'user' =>$newUser], 200);
+            }else{
+                return response()->json(['code' => 404, 'error' => 'Id not found', "id"=>$id], 404);
+            }
+        }
+    }
+
+    public function changePassword(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'oldpassword' => 'required|min:6|alpha_dash',
+            'password' => 'required|min:6|alpha_dash|confirmed',
+        ]);
+        if($validator->fails()){
+            $message = $validator->errors();
+                return response()->json(['code'=>400, 'error'=>$message], 400);
+        }else{
+            $newUser = Users::find($id);
+            if($newUser){
+                if(!Hash::check($request->input('oldpassword'), Auth::user()->password)){
+                    return response()->json(['code'=>400, 'error'=>'Old password do not match our records'], 400);
+                }
+                $newUser->update($request->except('id', 'old_password', 'password_confirmation'));
                 return response()->json(['code' => 200, 'message' => 'User successfully updated', 'user' =>$newUser], 200);
             }else{
                 return response()->json(['code' => 404, 'error' => 'Id not found', "id"=>$id], 404);
@@ -149,7 +174,7 @@ class UsersController extends Controller
         try {
             $user = Users::findOrFail($id);
             $user->delete();
-            return response()->json(['code' => 204, 'message' => 'User removed successfully'], 204);
+            return response()->json(['code' => 204, 'message' => 'User successfully removed'], 204);
         } catch (ModelNotFoundException $ex) {
             return response()->json(['errors' => array(['code' => 404, 'error' => 'Id not found', "id"=>$id])], 404);
         }

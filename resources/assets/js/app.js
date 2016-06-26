@@ -1,3 +1,10 @@
+window.$ = window.jQuery = require('jquery');
+require('bootstrap-sass');
+
+
+
+/*
+
 var app = angular.module('PadelCourts', [], function($interpolateProvider) {
     $interpolateProvider.startSymbol('<%');
     $interpolateProvider.endSymbol('%>');
@@ -89,7 +96,7 @@ app.controller('UsersController', function($scope, $http) {
         });
     };
 
-    $scope.getConcreteUser = function (id) {
+    $scope.getConcreteCourt = function (id) {
         $scope.loading = true;
         $http.get('../api/users/'+id).
         success(function(data, status, headers, config) {
@@ -176,4 +183,4 @@ app.controller('UsersController', function($scope, $http) {
 
     $scope.initUsers();
 
-});
+});*/
