@@ -6,15 +6,14 @@ $(document).ready(function () {
     var management = new UsersManagement(worker);
     var localStorageEnabled = ( typeof ( localStorage ) !== "undefined" );
 
-    var loading = false;
-
+    var loading = false, body = $('body');
 
     /*
      /
      / Declaración de eventos
      /
      */
-    $('#editModal').on('show.bs.modal', function (event) {
+   body.on('show.bs.modal', '#editModal', function (event) {
         var id = $(event.relatedTarget).data("edit");
         var user = management.getConcreteUser(id);
         $('#user-id').val(id);
@@ -27,7 +26,7 @@ $(document).ready(function () {
         $('#user-roles').prop('checked', (user.roles == 1));
     });
 
-    $('#apply-edit').on("click", function (event) {
+    body.on("click", '#apply-edit',function (event) {
         var newUser = {}, id;
         id = $('#user-id').val();
         newUser["name"] = $('#user-username').val();
@@ -41,16 +40,16 @@ $(document).ready(function () {
         updateAJAX(newUser, id);
     });
 
-    $('#deleteModal').on('show.bs.modal', function (event) {
+    body.on('show.bs.modal', '#deleteModal', function (event) {
         management.currentId = $(event.relatedTarget).data("delete");
     });
 
-    $('body').on('click', '#apply-delete', function () {
+    body.on('click', '#apply-delete', function () {
         $("#deleteModal").modal('toggle');
         deleteAJAX(management.currentId);
     });
 
-    $('#add-user').on("click", function () {
+    body.on("click", '#add-user',function () {
         var newUser = {};
         newUser["name"] = $('#newUser').val();
         newUser["email"] = $('#newEmail').val();

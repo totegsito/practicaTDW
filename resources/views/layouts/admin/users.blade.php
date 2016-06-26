@@ -1,11 +1,7 @@
-@extends('layouts.management')
+@extends('layouts.admin.management')
 
 @section('management-content')
 
-    <div class="alert alert-success hidden" role="alert" id="alert">
-        {{--<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>--}}
-
-    </div>
     <article class="panel panel-primary">
         <header class="panel-heading">
             <h1>Users</h1>
@@ -21,7 +17,7 @@
                     <th>Surname</th>
                     <th>Telephone</th>
                     <th>Enabled</th>
-                    <th>Role</th>
+                    <th>Admin</th>
                     <th>Options</th>
                     </tr>
                 </thead>

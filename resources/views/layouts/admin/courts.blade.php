@@ -1,4 +1,4 @@
-@extends('layouts.management')
+@extends('layouts.admin.management')
 
 @section('management-content')
 
@@ -10,10 +10,10 @@
             <h1>Courts</h1>
         </header>
         <div class="row" id="courts-space">
-            <div class="col-xs-6" id="add-court">
+            <div class="col-xs-4" id="add-court">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3>Add Court</h3>
+                        <h4>Add Court</h4>
                     </div>
                     <table class="table table-bordered court">
                         <tr>
@@ -26,8 +26,12 @@
                         </tr>
                     </table>
                     <div class="panel-footer">
-                        <button id="add" type="button" class="btn btn-primary center"><span
-                                    class="glyphicon glyphicon-plus"></span></button>
+                        <div class="btn-group" role="group">
+                        <button id="add" type="button" class="btn btn-primary center">
+                            <span class="glyphicon glyphicon-plus"></span>
+                        </button>
+
+                        </div>
                     </div>
                 </div>
             </div>
