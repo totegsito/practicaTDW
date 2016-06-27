@@ -7,6 +7,7 @@ $(document).ready(function () {
     var localStorageEnabled = ( typeof ( localStorage ) !== "undefined" );
 
     var loading = false, body = $('body');
+    var buttons;
 
     /*
      /
@@ -150,6 +151,7 @@ $(document).ready(function () {
      */
 
     var render = function (data) {
+
         var table = $("#users-table tbody");
         table.empty();
         table.append();
@@ -226,17 +228,22 @@ $(document).ready(function () {
     // navegadores "antiguos" que no tengan implementadas las nuevas APIs de HTML5 y
     // más concretamente estas dos.
 
+    loading = true;
     if (typeof( localStorage["users"] ) !== "undefined" && localStorageEnabled) {
         render($.parseJSON(localStorage.getItem("users")));
+        $('.btn-group .btn').each(function () {
+            $(this).attr("disabled", "disabled");
+        })
     }
 
-    loading = true;
     if (typeof ( Worker ) !== "undefined") {
-
         worker.postMessage({url: "api/users"});
         worker.addEventListener('message', function (e) {
             refreshUsers($.parseJSON(e.data)["users"]);
             loading = false;
+            $('.btn-group .btn').each(function () {
+                $(this).removeAttr('disabled');
+            });
         }, false);
     } else {
         $.getJSON('../api/users', function (data) {
@@ -245,6 +252,9 @@ $(document).ready(function () {
             alertFail("Connection failed. Try again later");
         }).always(function () {
             loading = false;
+            $('.btn-group .btn').each(function () {
+                $(this).removeAttr('disabled');
+            });
         });
     }
 });

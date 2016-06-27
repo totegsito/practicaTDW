@@ -5,7 +5,6 @@
 
 Route::group(['middleware'=>'auth.basic'], function(){
    Route::group(['prefix'=>'api'], function(){
-
        Route::resource('users', 'UsersController', ['except'=>['edit', 'create']]);
        Route::options('users', 'UsersController@options');
        Route::put('users/password/{id}', 'UsersController@changePassword');
