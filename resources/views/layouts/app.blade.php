@@ -90,7 +90,11 @@
         </div>
     </div>
 </nav>
+<main class="container">
+
 @yield('content')
+
+</main>
 
 
 <!-- JavaScripts -->

@@ -61,6 +61,7 @@ local.properties
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 # User-specific stuff:
+.idea/
 .idea/workspace.xml
 .idea/tasks.xml
 .idea/dictionaries
@@ -205,3 +206,6 @@ resources/assets/js/angular-route-segment.js
 resources/assets/js/angular-route.js
 resources/assets/js/angular.js
 resources/assets/js/angular.min.js
+
+
+.git-copy/

@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-    <main class="container">
         <section>
         @yield('management-content')
         </section>
@@ -19,7 +18,6 @@
                 </div>
             </article>
         </aside>
-    </main>
     <script src="{{ asset('js/admin.js') }}"></script>
 
 @endsection
