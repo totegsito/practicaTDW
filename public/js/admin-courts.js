@@ -8,7 +8,7 @@ $( document ).ready( function ( ) {
 
     var loading = false;
 
-    var cuerpo = $( 'body' );
+    var body = $( 'body' );
     
     /*
      /
@@ -16,14 +16,14 @@ $( document ).ready( function ( ) {
      /
      */
 
-    cuerpo.on( 'show.bs.modal', '#editModal', function ( event ) {
+    body.on( 'show.bs.modal', '#editModal', function ( event ) {
         var id = $( event.relatedTarget ).data( "edit" );
         var court = management.getConcreteCourt( id );
         $( '#edit-confirm' ).text( (court[ "avaliable" ] == 1 ) ? "disable" : "enable" );
         management.setCurrentId( id );
     } );
 
-    cuerpo.on( "click", '#apply-edit', function ( ) {
+    body.on( "click", '#apply-edit', function ( ) {
         var newcourt, id = management.getCurrentId( );
         newcourt = management.getConcreteCourt( id );
 
@@ -39,16 +39,16 @@ $( document ).ready( function ( ) {
         updateAJAX( newcourt, id );
     } );
 
-    cuerpo.on( 'show.bs.modal', '#deleteModal', function ( event ) {
+    body.on( 'show.bs.modal', '#deleteModal', function ( event ) {
         management.setCurrentId( $( event.relatedTarget ).data( "delete" ));
     } );
 
-    cuerpo.on( 'click', '#apply-delete', function ( ) {
+    body.on( 'click', '#apply-delete', function ( ) {
         $( "#deleteModal" ).modal( 'toggle' );
         deleteAJAX( management.getCurrentId( ) );
     } );
 
-    cuerpo.on( "click", '#add', function ( ) {
+    body.on( "click", '#add', function ( ) {
         postAJAX( {} );
     } );
 

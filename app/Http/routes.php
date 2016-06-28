@@ -11,10 +11,8 @@ Route::group(['middleware'=>'auth.basic'], function(){
        Route::get('users/reservations/{id}', "ReservationsController@getReservationsByUserId");
        Route::resource('courts', 'CourtsController', ['except'=>['edit', 'create']]);
        Route::options('courts', 'CourtsController@options');
-       Route::group(['prefix'=>'reservations'], function (){
-           Route::resource('/', 'ReservationsController', ['except'=>['edit', 'create']]);
-         Route::get('/user/{users_id}/{reservation_date?}', 'ReservationsController@getReservationsByUserId');
-       });
+       Route::resource('reservations', 'ReservationsController', ['except'=>['edit', 'create']]);
+       Route::get('reservations/user/{users_id}/{reservation_date?}', 'ReservationsController@getReservationsByUserId');
    });
 
    Route::group(['prefix'=>'admin'], function (){
@@ -37,7 +35,7 @@ Route::group(['middleware'=>'auth.basic'], function(){
 
     Route::group(['prefix'=>'user'],function (){
         Route::get('/', function (){
-            return view('layouts.user');
+            return view('layouts.user.user');
         });
     });
 });;
