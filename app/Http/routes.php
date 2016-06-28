@@ -35,7 +35,11 @@ Route::group(['middleware'=>'auth.basic'], function(){
 
     Route::group(['prefix'=>'user'],function (){
         Route::get('/', function (){
-            return view('layouts.user.user');
+            if(Auth::user()->enabled == 1){
+                return view('layouts.user.user');
+            }else{
+                return view('layouts.user.notenabled');
+            }
         });
     });
 });;
