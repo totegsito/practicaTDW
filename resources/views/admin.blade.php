@@ -6,12 +6,13 @@
         <section class="col-md-4 col-lg-4 col-lg-offset-4 col-md-offset-4">
             <article class="panel panel-primary">
                 <header class="panel-heading">
-                    Administración
+                    Management
                 </header>
                 <main class="list-group">
-                    <a class="list-group-item" href="{{url('admin/users')}}">Gestión de usuarios</a>
-                    <a class="list-group-item" href="{{url('admin/courts')}}">Gestión de pistas</a>
-                    <a class="list-group-item" href="{{url('admin/profile')}}">Mi perfil</a>
+                    <a class="list-group-item" href="{{url('admin/users')}}">Users Management</a>
+                    <a class="list-group-item" href="{{url('admin/courts')}}">Courts Management</a>
+                    <a class="list-group-item" href="{{url('admin/reservations')}}">Reservations Management</a>
+                    <a class="list-group-item" href="{{url('admin/profile')}}">My profile</a>
                 </main>
             </article>
 

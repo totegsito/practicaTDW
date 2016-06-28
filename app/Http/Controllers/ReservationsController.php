@@ -75,6 +75,7 @@ class ReservationsController extends Controller
             'courts_id' => 'required|max:255|unique:courts_users,courts_id,NULL,id,reservation_date,'.$request->input(['reservation_date']).'|exists:courts,id,avaliable,1',
             'users_id' => 'required|max:255|exists:users,id,enabled,1',
             'reservation_date' => 'required|date_format:Y-m-d H:i',
+            '1st_player' => 'min:3|max:100|string',
             '2nd_player' => 'min:3|max:100|string',
             '3rd_player' => 'min:5|max:100|string',
             '4th_player' => 'min:5|max:100|string',
@@ -131,7 +132,7 @@ class ReservationsController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'courts_id' => 'required|max:255|unique:courts_users,courts_id,NULL,id,reservation_date,'.$request->input(['reservation_date']).'|exists:courts,id,avaliable,1',
+            'courts_id' => 'required|max:255|unique:courts_users,courts_id,'.$id.',id,reservation_date,'.$request->input(['reservation_date']).'|exists:courts,id,avaliable,1',
             'users_id' => 'required|max:255|exists:users,id,enabled,1',
             'reservation_date' => 'required|date_format:Y-m-d H:i:s',
             '2nd_player' => 'min:3|max:100|string',
@@ -142,12 +143,14 @@ class ReservationsController extends Controller
             $message = $validator->errors();
             if($message->has("courts_id")){
                 return response()->json(["code"=>400, "error"=>"Court not avaliable for selected datetime"], 400);
+            }elseif ($message->has('users_id')){
+                return response()->json(['code'=>400, 'error'=>'User invalid'], 400);
             }
-            return response()->json($message,400);
+            return response()->json(['code'=>400, 'error'=>$message],400);
         }else{
             $newReservation = Reservation::find($id);
-            $newReservation->update($request->except('id'));
-            return response()->json(["code"=>201, "error"=>"Reservation updated successfully", "reservation"=>$newReservation],201);
+            $newReservation->update($request->except(['id', 'created_at']));
+            return response()->json(["code"=>201, "message"=>"Reservation updated successfully", "reservation"=>$newReservation],201);
         }
     }
 
