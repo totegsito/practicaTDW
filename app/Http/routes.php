@@ -40,14 +40,14 @@ Route::group(['middleware' => 'auth' ], function () {
 
     Route::group(['middleware' => 'user', 'prefix' => 'user'], function () {
         Route::get('/', function () {
-            if (Auth::user()->enabled == 1) {
-                return view('layouts.user.user');
-            } else {
-                return view('layouts.user.usernotenabled');
-            }
+            return view('layouts.user.user');
         });
+
         Route::get('profile', function () {
             return view('layouts.profile', ["id" => Auth::user()->id]);
         });
+    });
+    Route::get('notenabled', function (){
+        return view('layouts.user.usernotenabled');
     });
 });;

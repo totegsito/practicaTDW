@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class UserMiddleware
+class UserNotEnabled
 {
     /**
      * Handle an incoming request.
@@ -15,11 +15,6 @@ class UserMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if($request->user()->roles === 1){
-            return redirect('admin');
-        }else if( $request->user()->enabled === 0 ){
-            return redirect('notenabled');
-        }
         return $next($request);
     }
 }
