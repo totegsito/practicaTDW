@@ -18,6 +18,10 @@ class UsersTableSeeder extends Seeder {
     {
 
         $faker = Faker\Factory::create();
+
+        $usernameValidator = function($user){
+            return preg_match('/[a-zA-Z0-9-_]*/', $user) === 1;
+        };
         
         Users::create([
             'email'=>'admin@admin.es',
@@ -35,22 +39,22 @@ class UsersTableSeeder extends Seeder {
 
             Users::create(
                 [
-                    'email'=>$faker->email,
+                    'email'=> $faker->unique()->email,
                     'firstname' => $faker->firstName,
                     'surname' => $faker->lastName,
                     'telephone' => $faker->phoneNumber,
-                    'name'=>$faker->userName,
+                    'name'=>  str_replace('.', '_', $faker->unique()->userName),
                     'password'=> Hash::make('abc123'),
                     'enabled'=>$faker->boolean(),
                     'roles'=> '0'
                 ]);
             Users::create(
                 [
-                    'email'=>$faker->email,
+                    'email'=> $faker->unique()->email,
                     'firstname' => $faker->firstName,
                     'surname' => $faker->lastName,
                     'telephone' => $faker->phoneNumber,
-                    'name'=>$faker->userName,
+                    'name'=>  str_replace('.', '_', $faker->unique()->userName),
                     'password'=>Hash::make('admin123'),
                     'roles'=> '1'
                 ]

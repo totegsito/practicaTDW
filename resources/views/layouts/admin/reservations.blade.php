@@ -40,8 +40,8 @@
                         <p>Do you really want to delete the user?</p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-danger" id="apply-delete">Delete</button>
+                        <button type="button" class="btn  btn-raised btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn  btn-raised btn-danger" id="apply-delete">Delete</button>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
@@ -93,13 +93,15 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-warning" id="apply-edit">Apply Changes</button>
+                        <button type="button" class="btn  btn-raised btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn  btn-raised btn-warning" id="apply-edit">Apply Changes</button>
                     </div>
                 </div>
             </div>
         </div>
     </article>
-    <script src="{{asset('js/admin-reservations.js')}}" ></script>
 @endsection
 
+@section('scripts')
+    <script src="{{asset('js/admin-reservations.js')}}" ></script>
+@endsection

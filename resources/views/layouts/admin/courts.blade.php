@@ -27,7 +27,7 @@
                     </table>
                     <div class="panel-footer">
                         <div class="btn-group" role="group">
-                        <button id="add" type="button" class="btn btn-primary center">
+                        <button id="add" type="button" class="btn  btn-raised btn-primary center">
                             <span class="glyphicon glyphicon-plus"></span>
                         </button>
 
@@ -52,8 +52,8 @@
                     <p>Do you really want to delete the court?</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-danger" id="apply-delete">Delete</button>
+                    <button type="button" class="btn  btn-raised btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn  btn-raised btn-danger" id="apply-delete">Delete</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -71,12 +71,14 @@
                     <p>Do you really want to <strong id="edit-confirm"></strong> the court?</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-warning" id="apply-edit">Update</button>
+                    <button type="button" class="btn  btn-raised btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn  btn-raised btn-warning" id="apply-edit">Update</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div>
 
-    <script src="{{asset("js/admin-courts.js")}}"></script>
+@endsection
+@section('scripts')
+<script src="{{asset("js/admin-courts.js")}}"></script>
 @endsection
