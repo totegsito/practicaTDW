@@ -1,4 +1,6 @@
 $( document ).ready( function ( ) {
+    $.material.init();
+
     var worker;
     if ( typeof ( Worker ) !== "undefined" ) {
         worker = new Worker( "../js/ajax_calls.js" );
@@ -163,9 +165,9 @@ $( document ).ready( function ( ) {
             }
             var panelFooter = $( '<div></div>' ).addClass( "panel-footer" ).appendTo( panel );
             var buttonGroup = $( '<div></div>' ).addClass( "btn-group" ).attr( "role", "group" ).appendTo( panelFooter )
-            var editButton = $( '<button data-toggle="modal" data-target="#editModal" data-edit="' + courts[ court ][ "id" ] + '" data-avaliable="'+courts[ court ][ "avaliable" ]+'"></button>' ).addClass( "btn btn-warning" ).appendTo( buttonGroup );
+            var editButton = $( '<button data-toggle="modal" data-target="#editModal" data-edit="' + courts[ court ][ "id" ] + '" data-avaliable="'+courts[ court ][ "avaliable" ]+'"></button>' ).addClass( "btn btn-raised btn-warning" ).appendTo( buttonGroup );
             var editIcon = $( '<span></span>' ).addClass( "glyphicon glyphicon-edit" ).appendTo( editButton );
-            var deleteButton = $( '<button data-toggle="modal" data-target="#deleteModal" data-delete="' + courts[ court ].id + '"></button>' ).addClass( "btn btn-danger" ).appendTo( buttonGroup );
+            var deleteButton = $( '<button data-toggle="modal" data-target="#deleteModal" data-delete="' + courts[ court ].id + '"></button>' ).addClass( "btn btn-raised btn-danger" ).appendTo( buttonGroup );
             var deleteIcon = $( '<span></span>' ).addClass( "glyphicon glyphicon-trash" ).appendTo( deleteButton );
         }
         addCourt.appendTo( courtsSpace )
