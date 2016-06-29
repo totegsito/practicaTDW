@@ -5,7 +5,7 @@
         {{--<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>--}}
 
     </div>
-    <article class="panel panel-primary">
+    <article class="panel panel-success">
         <header class="panel-heading">
             <h1>Reservations</h1>
         </header>

@@ -149,7 +149,7 @@ $( document ).ready( function ( ) {
         courtsSpace.empty( );
         for ( var court in courts ) {
             var current = courts[ court ];
-            var col = $( '<div></div>' ).addClass( "col-xs-4" ).appendTo( courtsSpace );
+            var col = $( '<div></div>' ).addClass( "col-xs-12 col-sm-6 col-md-4" ).appendTo( courtsSpace );
             var panel = $( '<div></div>' ).addClass( "panel panel-"+( Boolean( current[ "avaliable" ]) ? "success" : "danger" )).appendTo( col );
             var panelHeading = $( '<div></div>' ).addClass( "panel-heading" ).appendTo( panel );
             var heading = $( '<h4></h4>' ).text( "Court " + ( Number( court ) + 1 )).appendTo( panelHeading );

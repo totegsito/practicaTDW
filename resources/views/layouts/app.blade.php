@@ -14,10 +14,13 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700">
 
     <!-- Styles -->
-    {!! Html::style('css/app.css') !!}
-    {!! Html::style('css/all.css') !!}
-    <link rel="stylesheet" href="{{asset("css/app.css")}}">
-    <link rel="stylesheet" href="{{asset("css/all.css")}}">
+
+{!! Html::style('css/all.css') !!}
+{!! Html::style('bower_components/bootstrap/dist/css/bootstrap.min.css') !!}
+{!! Html::style('bower_components/bootstrap-material-design/dist/css/ripples.min.css') !!}
+{!! Html::style('bower_components/bootstrap-material-design/dist/css/bootstrap-material-design.min.css') !!}
+
+
 
     {{-- <link href="{{ elixir('css/app.css') }}" rel="stylesheet"> --}}
 
@@ -44,7 +47,7 @@
     </style>
 </head>
 <body id="app-layout">
-<nav class="navbar navbar-default navbar-static-top">
+<nav class="navbar navbar-success navbar-static-top">
     <div class="container">
         <div class="navbar-header">
 
@@ -59,7 +62,7 @@
 
             <!-- Branding Image -->
             <a class="navbar-brand" href="#">
-                Laravel
+                Padel Courts
             </a>
         </div>
 
@@ -95,6 +98,9 @@
 
 <!-- JavaScripts -->
 <script src="{{ asset('js/app.js') }}" ></script>
+{!! Html::script('bower_components/bootstrap-material-design/dist/js/ripples.min.js') !!}
+{!! Html::script('bower_components/bootstrap-material-design/dist/js/material.min.js') !!}
+
 
 </body>
 </html>

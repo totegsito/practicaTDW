@@ -6,7 +6,7 @@
         @yield('management-content')
         </section>
         <aside>
-            <article class="panel panel-primary">
+            <article class="panel panel-success">
                 <div class="panel-heading">
                     Management
                 </div>

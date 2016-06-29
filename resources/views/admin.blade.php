@@ -4,7 +4,7 @@
 
     <main class="container">
         <section class="col-md-4 col-lg-4 col-lg-offset-4 col-md-offset-4">
-            <article class="panel panel-primary">
+            <article class="panel panel-success">
                 <header class="panel-heading">
                     Administración
                 </header>

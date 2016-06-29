@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    $.material.init();
     var worker;
     if (typeof ( Worker ) !== "undefined") {
         worker = new Worker("../js/ajax_calls.js");

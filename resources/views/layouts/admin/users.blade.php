@@ -2,7 +2,10 @@
 
 @section('management-content')
 
-    <article class="panel panel-primary">
+    <div class="alert alert-success hidden" role="alert" id="alert">
+        {{--<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>--}}
+    </div>
+    <article class="panel panel-success">
         <header class="panel-heading">
             <h1>Users</h1>
         </header>

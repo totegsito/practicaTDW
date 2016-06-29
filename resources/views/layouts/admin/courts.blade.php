@@ -10,8 +10,8 @@
             <h1>Courts</h1>
         </header>
         <div class="row" id="courts-space">
-            <div class="col-xs-4" id="add-court">
-                <div class="panel panel-primary">
+            <div class="col-xs-12 col-sm-6 col-md-4" id="add-court">
+                <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4>Add Court</h4>
                     </div>
