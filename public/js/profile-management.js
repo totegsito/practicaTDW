@@ -1,4 +1,7 @@
 $(document).ready(function () {
+
+    $.material.init();
+
     var worker;
     if (typeof ( Worker ) !== "undefined") {
         worker = new Worker("../js/ajax_calls.js");
@@ -39,19 +42,16 @@ $(document).ready(function () {
 
         if(current.val() === ""){
             var currentInfo = $('#currentInfo');
-            console.log(currentInfo);
             currentInfo.text("Password cannot be empty");
             currentInfo.removeClass('hidden');
             currentInfo.closest('.form-group').addClass('has-error');
         }else if(newPass.val() ===""){
             var newInfo = $('#newInfo');
-            console.log(newInfo);
             newInfo.text("Password cannot be empty");
             newInfo.removeClass('hidden');
             newInfo.closest('.form-group').addClass('has-error');
         }else if(confirm.val() !== newPass.val()){
             var confirmInfo = $('#confirmInfo');
-            console.log(confirmInfo);
             confirmInfo.text("Passwords don't match");
             confirmInfo.removeClass('hidden');
             confirmInfo.closest('.form-group').addClass('has-error');

@@ -1,0 +1,24 @@
+{
+  "name": "PadelCourts",
+  "homepage": "franciscoquesada.me",
+  "authors": [
+    "Francisco Quesada Munioz <pacoquesmun@gmail.com>"
+  ],
+  "description": "Web Application for Paddel Courts Management",
+  "main": "",
+  "keywords": [
+    "Paddel",
+    "Courts"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap-material-design": "^0.5.10"
+  }
+}
