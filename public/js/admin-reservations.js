@@ -1,4 +1,6 @@
 $(document).ready(function () {
+    $.material.init();
+
     var worker;
     if ( typeof ( Worker ) !== "undefined" ) {
         worker = new Worker( "../js/ajax_calls.js" );
@@ -133,7 +135,7 @@ $(document).ready(function () {
                     row.append(col);
                 }
             });
-            row.append('<td><div class="btn-group" role="group"><button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editModal" data-edit="' + reservations[reservation]["id"] + '"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button><button type="button" class="btn btn-danger"data-toggle="modal" data-target="#deleteModal"  data-delete="' + reservations[reservation]["id"] + '"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></div></td>');
+            row.append('<td><div class="btn-group" role="group"><button type="button" class="btn btn-raised btn-warning" data-toggle="modal" data-target="#editModal" data-edit="' + reservations[reservation]["id"] + '"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button><button type="button" class="btn btn-raised btn-danger"data-toggle="modal" data-target="#deleteModal"  data-delete="' + reservations[reservation]["id"] + '"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></div></td>');
             table.append(row);
         }
     };

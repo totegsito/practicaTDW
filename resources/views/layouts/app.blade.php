@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
 
     <title>Padel Courts</title>
 
@@ -14,24 +14,24 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700">
 
     <!-- Styles -->
-    {!! Html::style('css/app.css') !!}
-    {!! Html::style('css/all.css') !!}
-    <link rel="stylesheet" href="{{asset("css/app.css")}}">
-    <link rel="stylesheet" href="{{asset("css/all.css")}}">
-
-    {{-- <link href="{{ elixir('css/app.css') }}" rel="stylesheet"> --}}
+{!! Html::style('css/all.css') !!}
+{!! Html::style('bower_components/bootstrap/dist/css/bootstrap.min.css') !!}
+{!! Html::style('bower_components/bootstrap-material-design/dist/css/bootstrap-material-design.min.css') !!}
+{!! Html::style('bower_components/bootstrap-material-design/dist/css/ripples.min.css') !!}
 
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+
+{{-- <link href="{{ elixir('css/app.css') }}" rel="stylesheet"> --}}
+
+
+
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-
-    {!! Html::style('css/app.css') !!}
-    <script src="{{asset('js/jquery-2.2.4.min.js')}}"></script>
 
     <style>
         body {
@@ -82,6 +82,9 @@
                         </a>
 
                         <ul class="dropdown-menu" role="menu">
+                            @if (Auth::user()->enabled == 1)
+                                <li><a href="{{ url( (Auth::user()->roles == 1 ? 'admin' : 'user').'/profile') }}"><i class="fa fa-btn fa-user"></i>My profile</a></li>
+                            @endif
                             <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Logout</a></li>
                         </ul>
                     </li>
@@ -92,13 +95,26 @@
 </nav>
 <main class="container">
 
-@yield('content')
+    @yield('content')
 
 </main>
 
 
 <!-- JavaScripts -->
-<script src="{{ asset('js/app.js') }}" ></script>
+<!--<script src="{{ asset('js/jquery-2.2.4.min.js') }}"></script>-->
+{!! Html::script('bower_components/jquery/dist/jquery.min.js') !!}
+{!! Html::script('bower_components/bootstrap/dist/js/bootstrap.min.js') !!}
+{!! Html::script('bower_components/bootstrap-material-design/dist/js/ripples.js') !!}
+{!! Html::script('bower_components/bootstrap-material-design/dist/js/material.js') !!}
+
+<script>
+    $('document').on('ready', function () {
+        $.material.init();
+        $.m
+    });
+</script>
+
+@yield('scripts')
 
 </body>
 </html>

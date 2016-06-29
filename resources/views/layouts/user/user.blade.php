@@ -10,8 +10,8 @@
                 <h5>Here you can manage your reservations and reserve Padel Courts</h5>
             </article>
             <footer class="panel-footer">
-                <input type="button" class="btn btn-success" value="My Reservations">
-                <input type="button" class="btn btn-success" value="Reserve">
+                <input type="button" class="btn btn-raised btn-success" value="My Reservations">
+                <input type="button" class="btn btn-raised btn-success" value="Reserve">
             </footer>
         </section>
     </main>
