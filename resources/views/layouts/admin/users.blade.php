@@ -2,7 +2,7 @@
 
 @section('management-content')
 
-    <article class="panel panel-primary">
+    <article class="panel panel-success">
         <header class="panel-heading">
             <h1>Users</h1>
         </header>

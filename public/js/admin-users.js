@@ -10,7 +10,6 @@ $(document).ready(function () {
     var localStorageEnabled = ( typeof ( localStorage ) !== "undefined" );
 
     var loading = false, body = $('body');
-    var buttons;
 
     /*
      /
@@ -240,7 +239,7 @@ $(document).ready(function () {
     }
 
     if (typeof ( Worker ) !== "undefined") {
-        worker.postMessage({url: "api/users"});
+        worker.postMessage( { url: "api/users" } );
         worker.addEventListener('message', function (e) {
             refreshUsers($.parseJSON(e.data)["users"]);
             loading = false;

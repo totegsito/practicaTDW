@@ -12,7 +12,7 @@ class CreateCourtsTable extends Migration
      */
     public function up()
     {
-        Schema::create('courts', function (Blueprint $table) {
+        Schema::create('avaliableCourts', function (Blueprint $table) {
             $table->increments('id');
             $table->boolean('avaliable');
             $table->timestamps();

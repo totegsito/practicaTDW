@@ -1,8 +1,6 @@
 <?php
 
 
-
-
 Route::auth();
 
 Route::get('/', 'HomeController@index');
@@ -17,7 +15,6 @@ Route::group(['middleware'=>['api'],'prefix' => 'api'], function () {
     Route::get('reservations/user/{users_id}/{reservation_date?}', 'ReservationsController@getReservationsByUserId');
 });
 Route::group(['middleware' => 'auth' ], function () {
-
     Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {
         Route::get('/', function () {
             return view('admin');
@@ -34,10 +31,7 @@ Route::group(['middleware' => 'auth' ], function () {
         Route::get('reservations', function () {
             return view('layouts.admin.reservations');
         });
-
-
     });
-
     Route::group(['middleware' => 'user', 'prefix' => 'user'], function () {
         Route::get('/', function () {
             return view('layouts.user.user');
@@ -45,6 +39,10 @@ Route::group(['middleware' => 'auth' ], function () {
 
         Route::get('profile', function () {
             return view('layouts.profile', ["id" => Auth::user()->id]);
+        });
+
+        Route::get('padel', function (){
+            return view('layouts.user.padel');
         });
     });
     Route::get('notenabled', function (){

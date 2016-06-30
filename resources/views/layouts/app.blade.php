@@ -18,6 +18,7 @@
 {!! Html::style('bower_components/bootstrap/dist/css/bootstrap.min.css') !!}
 {!! Html::style('bower_components/bootstrap-material-design/dist/css/bootstrap-material-design.min.css') !!}
 {!! Html::style('bower_components/bootstrap-material-design/dist/css/ripples.min.css') !!}
+    {!! Html::style('bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css') !!}
 
 
 
@@ -44,7 +45,7 @@
     </style>
 </head>
 <body id="app-layout">
-<nav class="navbar navbar-default navbar-static-top">
+<nav class="navbar navbar-success navbar-static-top">
     <div class="container">
         <div class="navbar-header">
 
@@ -59,7 +60,7 @@
 
             <!-- Branding Image -->
             <a class="navbar-brand" href="#">
-                Laravel
+                Padel Courts
             </a>
         </div>
 
@@ -104,15 +105,11 @@
 <!--<script src="{{ asset('js/jquery-2.2.4.min.js') }}"></script>-->
 {!! Html::script('bower_components/jquery/dist/jquery.min.js') !!}
 {!! Html::script('bower_components/bootstrap/dist/js/bootstrap.min.js') !!}
+{!! Html::script("/bower_components/moment/min/moment.min.js") !!}
+{!! Html::script("/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js") !!}
 {!! Html::script('bower_components/bootstrap-material-design/dist/js/ripples.js') !!}
 {!! Html::script('bower_components/bootstrap-material-design/dist/js/material.js') !!}
 
-<script>
-    $('document').on('ready', function () {
-        $.material.init();
-        $.m
-    });
-</script>
 
 @yield('scripts')
 

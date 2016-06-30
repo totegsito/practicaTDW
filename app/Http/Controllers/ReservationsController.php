@@ -32,7 +32,7 @@ class ReservationsController extends Controller
     {
         //
         if(Reservation::all()!=null){
-            return response()->json(["code"=>200, "reservations"=>Reservation::orderBy('reservation_date')->get(    )], 200);
+            return response()->json(["code"=>200, "reservations"=>Reservation::orderBy('reservation_date')->get()], 200);
         }else{
             return response()->json(["code"=>404, "error"=>"Reservations not found"], 404);
         }
