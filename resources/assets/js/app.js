@@ -12,29 +12,29 @@ var app = angular.module('PadelCourts', [], function($interpolateProvider) {
 
 app.controller('CourtsController', function($scope, $http) {
     $scope.shownCourts = [];
-    $scope.courts = [];
+    $scope.avaliableCourts = [];
     $scope.loading = false;
 
 
     $scope.initCourts = function() {
         $scope.loading = true;
-        $http.get('../api/courts').
+        $http.get('../api/avaliableCourts').
         success(function(data, status, headers, config) {
-            $scope.courts = data.courts;
-            $scope.shownCourts = $scope.courts.slice(0,5);
+            $scope.avaliableCourts = data.avaliableCourts;
+            $scope.shownCourts = $scope.avaliableCourts.slice(0,5);
             $scope.loading = false;
         });
     };
 
     $scope.addCourt = function() {
         $scope.loading = true;
-        $http.post('../api/courts', {
+        $http.post('../api/avaliableCourts', {
                 avaliable: 0
             }
         ).success(function(data, status, headers, config) {
-            $scope.courts.push(data);
+            $scope.avaliableCourts.push(data);
             $scope.court = {};
-            console.log($scope.courts);
+            console.log($scope.avaliableCourts);
             $scope.loading = false;
         });
     };
@@ -42,14 +42,14 @@ app.controller('CourtsController', function($scope, $http) {
 
 
     $scope.getCourt = function (index) {
-        return $scope.courts[index];
+        return $scope.avaliableCourts[index];
     };
 
 
     $scope.updateCourt = function(court) {
         $scope.loading = true;
 
-        $http.put('../api/courts/' + court.id, {
+        $http.put('../api/avaliableCourts/' + court.id, {
             avaliable:  court.avaliable
         }).success(function(data, status, headers, config) {
             court = data;
@@ -60,12 +60,12 @@ app.controller('CourtsController', function($scope, $http) {
 
     $scope.deleteCourt = function(index) {
         $scope.loading = true;
-        var court = $scope.courts[index];
+        var court = $scope.avaliableCourts[index];
 
         console.log(court);
-        $http.delete('../api/courts/' + court.id)
+        $http.delete('../api/avaliableCourts/' + court.id)
             .success(function() {
-                $scope.courts.splice(index, 1);
+                $scope.avaliableCourts.splice(index, 1);
                 $scope.loading = false;
             });
 

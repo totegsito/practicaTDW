@@ -5,7 +5,7 @@
         @yield('management-content')
         </section>
         <aside>
-            <article class="panel panel-primary">
+            <article class="panel panel-success">
                 <div class="panel-heading">
                     <h3>Management</h3>
                 </div>
@@ -14,7 +14,6 @@
                                                                                       id="enabled-request"></span> </a>
                     <a href="{{url('admin/courts')}}" class="list-group-item"><h5>Courts</h5></a>
                     <a href="{{url('admin/reservations')}}" class="list-group-item"><h5>Reservations</h5></a>
-                    <a href="{{url('admin/profile')}}" class="list-group-item"><h5>My profile</h5></a>
                 </div>
             </article>
         </aside>
