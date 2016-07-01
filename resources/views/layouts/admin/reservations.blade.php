@@ -174,19 +174,71 @@
                             <input type="hidden" id="reservation-id">
                             <div class="form-group">
                                 <label for="reservation-date" class="control-label">Date:</label>
-                                <input type="text" class="form-control" id="reservation-date"
-                                       pattern="^\d\d\d\d-(0?[1-9]|1[0-2])-(0?[1-9]|[12][0-9]|3[01]) (1(1|2|3||7|8|9)|2(0|1)):00:00$">
+                                <input type="text" class="form-control" id="reservation-date">
                                 <span>
                                     <strong id="dateInfo" class="help-block hidden"></strong>
                                 </span>
                             </div>
+                            <div class="col-md-10">
+                                <div class="radio radio-primary">
+                                    <label>
+                                        <input type="radio" name="putRadios" id="putRadios1" value="10">10:00
+                                    </label>
+                                </div>
+                                <div class="radio radio-primary">
+                                    <label>
+                                        <input type="radio" name="putRadios" id="putRadios2" value="11">11:00
+                                    </label>
+                                </div>
+                                <div class="radio radio-primary">
+                                    <label>
+                                        <input type="radio" name="putRadios" id="putRadios3" value="12">12:00
+                                    </label>
+                                </div>
+                                <div class="radio radio-primary">
+                                    <label>
+                                        <input type="radio" name="putRadios" id="putRadios4" value="13">13:00
+                                    </label>
+                                </div>
+                                <div class="radio radio-primary">
+                                    <label>
+                                        <input type="radio" name="putRadios" id="putRadios5" value="17">17:00
+                                    </label>
+                                </div>
+                                <div class="radio radio-primary">
+                                    <label>
+                                        <input type="radio" name="putRadios" id="putRadios6" value="18">18:00
+                                    </label>
+                                </div>
+                                <div class="radio radio-primary">
+                                    <label>
+                                        <input type="radio" name="putRadios" id="putRadios7" value="19">19:00
+                                    </label>
+                                </div>
+                                <div class="radio radio-primary">
+                                    <label>
+                                        <input type="radio" name="putRadios" id="putRadios8" value="20">20:00
+                                    </label>
+                                </div>
+                                <div class="radio radio-primary">
+                                    <label>
+                                        <input type="radio" name="putRadios" id="putRadios9" value="21">21:00
+                                    </label>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label for="reservation-user" class="control-label">User Id:</label>
                                 <input type="number" class="form-control" id="reservation-user" min="1">
+                                <span>
+                                    <strong id="userInfo" class="help-block hidden"></strong>
+                                </span>
                             </div>
                             <div class="form-group">
                                 <label for="reservation-court" class="control-label">Court Id:</label>
                                 <input type="number" class="form-control" id="reservation-court" min="1">
+                                <span>
+                                    <strong id="courtInfo" class="help-block hidden"></strong>
+                                </span>
                             </div>
                             <div class="form-group">
                                 <label for="reservation-first" class="control-label">1st Player:</label>

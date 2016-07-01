@@ -15,8 +15,15 @@ $(document).ready(function () {
     body.on('show.bs.modal', '#editModal', function (event) {
         var id = $(event.relatedTarget).data("edit");
         var reservation = management.getConcreteReservation(id);
+        var date = reservation["reservation_date"].split(" ");
+        $('input[name=putRadios]').each(function (k) {
+            var hour = date[1].split(":");
+            if($(this).val() == hour[0]){
+                $(this).attr('checked', true);
+            }
+        });
         $('#reservation-id').val(id);
-        $('#reservation-date').val(reservation["reservation_date"]);
+        $('#reservation-date').val(date[0]);
         $('#reservation-user').val(reservation["users_id"]);
         $('#reservation-court').val(reservation["courts_id"]);
         $('#reservation-first').val(reservation["1st_player"]);
@@ -28,17 +35,26 @@ $(document).ready(function () {
     body.on("click", '#apply-edit', function (event) {
         var newReservation = {}, id;
         var date = $('#reservation-date');
-        if (date.val().match(/^\d\d\d\d-(0?[1-9]|1[0-2])-(0?[1-9]|[12][0-9]|3[01]) (1(1|2|3||7|8|9)|2(0|1)):00:00$/)) {
+        if (date.val().match(/^\d\d\d\d-(0?[1-9]|1[0-2])-(0?[1-9]|[12][0-9]|3[01])$/)) {
             id = $('#reservation-id').val();
-            newReservation["reservation_date"] = date.val();
-            newReservation["users_id"] = $('#reservation-user').val();
-            newReservation["courts_id"] = $('#reservation-court').val();
-            newReservation["1st_player"] = $('#reservation-first').val();
-            newReservation["2nd_player"] = $('#reservation-second').val();
-            newReservation["3rd_player"] = $('#reservation-third').val();
-            newReservation["4th_player"] = $('#reservation-fourth').val();
-            $('#editModal').modal('toggle');
-            updateAJAX(newReservation, id);
+            newReservation["reservation_date"] = date.val() + " " + $('input[name=putRadios]:checked').val() + ":00";
+            var user = $('#reservation-user').val();
+            var court = $('#reservation-court').val();
+            if(user === ""){
+                $('#userInfo').text("Empty user.").removeClass('hidden');
+            }else if( court === ""){
+                $('#courtInfo').text("Empty court").removeClass('hidden');
+            }else{
+                newReservation["users_id"] = user;
+                newReservation["courts_id"] = court;
+                newReservation["1st_player"] = $('#reservation-first').val();
+                newReservation["2nd_player"] = $('#reservation-second').val();
+                newReservation["3rd_player"] = $('#reservation-third').val();
+                newReservation["4th_player"] = $('#reservation-fourth').val();
+                $('#editModal').modal('toggle');
+                updateAJAX(newReservation, id);
+            }
+            
         } else {
             var currentInfo = $('#dateInfo');
             currentInfo.text("Invalid datetime. ");
@@ -49,6 +65,7 @@ $(document).ready(function () {
 
     body.on('show.bs.modal', '#addModal', function (event) {
         var date = new Date();
+        $('#add-date').val(moment().format('YYYY-MM-D'));
         $('input[name=optionsRadios]').each(function (k) {
             if($(this).val() <= date.getHours()){
                 $(this).attr("disabled", "");
@@ -59,11 +76,20 @@ $(document).ready(function () {
         });
     });
 
+    $('#reservation-date').datetimepicker({
+        locale: 'en',
+        format: 'YYYY-MM-D',
+        enabledHours: [10, 11, 12, 13, 17, 18, 19 ,20, 21],
+        minDate: moment(),
+        maxDate: moment().add(7,"days"),
+        keepInvalid: true
+    });
 
 
     $('#add-date').datetimepicker({
         locale: 'en',
         format: 'YYYY-MM-D',
+        enabledHours: [10, 11, 12, 13, 17, 18, 19 ,20, 21],
         minDate: moment(),
         maxDate: moment().add(7,"days"),
         showTodayButton: true,
@@ -75,15 +101,23 @@ $(document).ready(function () {
         var date = $('#add-date').val();
         if (date.match(/^\d\d\d\d-(0?[1-9]|1[0-2])-(0?[1-9]|[12][0-9]|3[01])$/)) {
             newReservation["reservation_date"] = date + " " + $('input[name=optionsRadios]:checked').val() + ":00";
-            newReservation["users_id"] = $('#add-user').val();
-            newReservation["courts_id"] = $('#add-court').val();
-            newReservation["1st_player"] = $('#add-first').val();
-            newReservation["2nd_player"] = $('#add-second').val();
-            newReservation["3rd_player"] = $('#add-third').val();
-            newReservation["4th_player"] = $('#add-fourth').val();
-            $('#addModal').modal('toggle');
-            console.log(newReservation);
-            postAJAX( newReservation );
+            var user = $('#add-user').val();
+            var court = $('#add-court').val();
+            if(user === ""){
+                $('#addUserInfo').removeClass('hidden').text('User id cannot be empty');
+            }else if( court === ""){
+                $('#addCourtInfo').removeClass('hidden').text('User id cannot be empty');
+            }else{
+                newReservation["users_id"] = user;
+                newReservation["courts_id"] = court;
+                newReservation["1st_player"] = $('#add-first').val();
+                newReservation["2nd_player"] = $('#add-second').val();
+                newReservation["3rd_player"] = $('#add-third').val();
+                newReservation["4th_player"] = $('#add-fourth').val();
+                $('#addModal').modal('toggle');
+                console.log(newReservation);
+                postAJAX( newReservation );
+            }
     }else{
         var currentInfo = $('#addDateInfo');
         currentInfo.text("Invalid datetime.");
@@ -162,8 +196,6 @@ var updateAJAX = function (data, id) {
                 url: "../api/reservations" ,
                 method: "POST",
                 data: data,
-                contentType: 'application/json',
-                dataType: 'json',
                 success: function ( data ) {
                     var reservations = management.getReservations( );
                     reservations.push( data[ "reservation" ]);

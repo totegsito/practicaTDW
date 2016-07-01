@@ -75,18 +75,18 @@ class ReservationsController extends Controller
             'courts_id' => 'required|max:255|unique:courts_users,courts_id,NULL,id,reservation_date,'.$request->input(['reservation_date']).'|exists:courts,id,avaliable,1',
             'users_id' => 'required|max:255|exists:users,id,enabled,1',
             'reservation_date' => 'required|date_format:Y-m-d H:i',
-            '1st_player' => 'min:3|max:100|string',
-            '2nd_player' => 'min:3|max:100|string',
-            '3rd_player' => 'min:5|max:100|string',
-            '4th_player' => 'min:5|max:100|string',
+            '1st_player' => 'min:2|max:100|string',
+            '2nd_player' => 'min:2|max:100|string',
+            '3rd_player' => 'min:2|max:100|string',
+            '4th_player' => 'min:2|max:100|string',
         ]);
 
         if($validator->fails()){
             $message = $validator->errors();
             if($message->has("courts_id")){
-                return response()->json(["code"=>400, "error"=>"Court not avaliable for selected datetime"], 400);
+                return response()->json(["code"=>400, "error"=>"Court not avaliable for selected datetime", "court" => $request->input('courts_id')], 400);
             }elseif ($message->has("users_id")){
-                return response()->json(["code"=>400, "error"=>"User not enabled"], 400);
+                return response()->json(["code"=>400, "error"=>"User not enabled", "users" => $request->input(['users_id'])], 400);
             }else
                 return response()->json(["code"=>400, "error"=>$message],400);
         }else{
@@ -134,10 +134,11 @@ class ReservationsController extends Controller
         $validator = Validator::make($request->all(), [
             'courts_id' => 'required|max:255|unique:courts_users,courts_id,'.$id.',id,reservation_date,'.$request->input(['reservation_date']).'|exists:courts,id,avaliable,1',
             'users_id' => 'required|max:255|exists:users,id,enabled,1',
-            'reservation_date' => 'required|date_format:Y-m-d H:i:s',
-            '2nd_player' => 'min:3|max:100|string',
-            '3rd_player' => 'min:5|max:100|string',
-            '4th_player' => 'min:5|max:100|string',
+            'reservation_date' => 'required|date_format:Y-m-d H:i',
+            '1st_player' => 'min:2|max:100|string',
+            '2nd_player' => 'min:2|max:100|string',
+            '3rd_player' => 'min:2|max:100|string',
+            '4th_player' => 'min:2|max:100|string',
         ]);
         if($validator->fails()){
             $message = $validator->errors();

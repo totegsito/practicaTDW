@@ -32,7 +32,7 @@
 
     <section class="col-md-8 col-md-offset-1">
         <header>
-            <ul class="nav nav-tabs success">
+            <ul id="nav-days" class="nav nav-tabs success">
                 <li><a href="#monday" data-toggle="tab">Monday</a></li>
                 <li><a href="#tuesday" data-toggle="tab">Tuesday</a></li>
                 <li><a href="#wednesday" data-toggle="tab">Wednesday</a></li>
@@ -42,7 +42,7 @@
                 <li><a href="#sunday" data-toggle="tab">Sunday</a></li>
             </ul>
         </header>
-        <article class="well tab-content">
+        <article id="tabs" class="well tab-content">
             <div class="tab-pane fade" id="monday">
             </div>
             <div class="tab-pane fade" id="tuesday">
@@ -57,8 +57,9 @@
             </div>
             <div class="tab-pane fade" id="sunday">
             </div>
-
         </article>
+
+
 
 
     </section>
