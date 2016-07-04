@@ -1,5 +1,11 @@
 @extends('layouts.admin.management')
 
+@section('admin-navbar')
+    <li><a href="{{ url('admin/users') }}">Users</a></li>
+    <li><a href="{{ url('admin/courts') }}">Courts</a></li>
+    <li class="active"><a href="{{ url('admin/reservations') }}">Reservations</a></li>
+@endsection
+
 @section('management-content')
     <div class="alert alert-success hidden" role="alert" id="alert">
         {{--<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>--}}
@@ -9,7 +15,6 @@
             <h1>Reservations</h1>
         </header>
         <div class="table-responsive">
-
             <table class="table table-striped" id="reservations-table">
                 <thead>
                 <tr>

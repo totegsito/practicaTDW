@@ -1,5 +1,9 @@
 @extends('layouts.user.user')
 
+@section('user-navbar')
+    <li class="active"><a href="{{ url('user/padel') }}">Padel Courts</a></li>
+    <li><a href="{{ url('user/history') }}">My history</a></li>
+@endsection
 
 @section('content')
     <div class="alert alert-success hidden" role="alert" id="alert">

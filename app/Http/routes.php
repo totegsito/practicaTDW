@@ -13,7 +13,7 @@ Route::group(['middleware'=>['api'],'prefix' => 'api'], function () {
     Route::options('courts', 'CourtsController@options');
     Route::resource('reservations', 'ReservationsController', ['except' => ['edit', 'create']]);
     Route::get('reservations/date/{reservation_date}', 'ReservationsController@getReservationsByReservationDate');
-    Route::get('reservations/user/{users_id}/{reservation_date?}', 'ReservationsController@getReservationsByUserId');
+    Route::get('reservations/user/{users_id}', 'ReservationsController@getReservationsByUserId');
 });
 Route::group(['middleware' => 'auth' ], function () {
     Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {

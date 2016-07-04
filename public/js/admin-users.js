@@ -250,13 +250,12 @@ $(document).ready(function () {
     } else {
         $.getJSON('../api/users', function (data) {
             refreshUsers(data["users"]);
-        }).fail(function () {
-            alertFail("Connection failed. Try again later");
-        }).always(function () {
             loading = false;
             $('.btn-group .btn').each(function () {
                 $(this).removeAttr('disabled');
             });
+        }).fail(function () {
+            alertFail("Connection failed. Try again later");
         });
     }
 });

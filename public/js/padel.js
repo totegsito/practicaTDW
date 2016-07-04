@@ -29,14 +29,22 @@ $(document).ready(function () {
             $(this).toggleClass('selected')
         });
 
-        body.on('shown.bs.tab', '.tab-pane a[data-toggle="tab"]', function (e) {
+        body.on('shown.bs.tab', '#nav-days.nav-tabs a[data-toggle="tab"]', function () {
+            var date = moment();
+            var index = $('#nav-days li.active').index();
+            var tab = $($(this).attr('href'));
+            tab.find('li:not(.disabled) a').first().tab('show');
+            $('.temporal').removeClass('temporal');
+        });
+
+
+        body.on('shown.bs.tab', '#tabs .tab-pane a[data-toggle="tab"]', function (e) {
             var active = $('#tabs-text .active');
             active.addClass('row');
             var dayIndex = $('#nav-days li.active').attr('data-date');
             var hour = $('#tabs div.active li.active a').attr('href').replace('#', '');
             active.empty();
             var date = moment().add(dayIndex, 'days').minute(0).hour(hour).seconds(0);
-
             var reservations = padel.getReservationsByDateTime(date.format("YYYY-MM-DD HH:mm:ss"));
             var courts = padel.getCourts();
             var avaliable = true, occupied = false;
@@ -62,7 +70,6 @@ $(document).ready(function () {
                 var h4 = '<h4>Court ' + (Number(i) + 1) + '</h4>';
                 if(title != undefined){
                     h4 = '<a href="javascript: false;" title="'+title+'">'+h4+'</a>';
-                    console.log(h4);
                 }
                 $(h4).appendTo(header);
                 var table = $('<table class="table table-bordered court' + ((!occupied && avaliable) ? ' avaliable' : '') + '" data-id="' + courts[i]["id"] + '"></table>').appendTo(section);
@@ -73,7 +80,7 @@ $(document).ready(function () {
                     }
                     table.append(rows)
                 }
-                active.append(section)
+                active.append(section);
                 title = undefined;
             }
         });
@@ -223,6 +230,7 @@ $(document).ready(function () {
                                     "4th_player": thPlayer.val()
                                 };
                                 selected.removeClass('selected');
+                                $('#nav-days li.active a').tab('show');
                                 postAJAX(localReservation);
                             } else {
                                 thPlayer.focus();
@@ -327,7 +335,7 @@ $(document).ready(function () {
                     padel.setReservations(data["reservations"]);
                     renderHours();
                 }).fail(function () {
-
+                    alertFail("Connection failed. Try again later");
                 }).always(function () {
                     loading = false;
                 })
@@ -336,15 +344,16 @@ $(document).ready(function () {
         } else {
             $.getJSON('../api/courts', function (data) {
                 padel.setCourts(data);
-
                 $.getJSON('../api/reservations', function (reservations) {
                     padel.setReservations(reservations["reservations"]);
+                    renderHours();
                 }).fail(function () {
-
+                    alertFail("Connection failed. Try again later");
                 }).always(function () {
                     loading = false;
                 })
             }).fail(function () {
+                alertFail("Connection failed. Try again later");
 
             }).always(function () {
                 loading = false;
@@ -354,19 +363,12 @@ $(document).ready(function () {
 )
 ;
 var PadelReservation = function () {
-    this.players = {};
     this.courts = {};
     this.reservations = {};
 };
 
 PadelReservation.prototype = {
     constructor: PadelReservation,
-    getPlayers: function () {
-        return this.players;
-    },
-    setPlayers: function (players) {
-        this.players = players;
-    },
     getCourts: function () {
         return this.courts;
     },
