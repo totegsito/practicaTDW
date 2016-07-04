@@ -15,3 +15,9 @@
         </section>
     </main>
 @endsection
+
+@section('navbar')
+    <li class="active"><a href="{{ url('/') }}">Home</a></li>
+    <li><a href="{{ url('user/padel') }}">Padel Courts</a></li>
+    <li><a href="{{ url('user/history') }}">My history</a></li>
+@endsection

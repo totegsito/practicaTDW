@@ -1,5 +1,11 @@
 @extends('layouts.admin.management')
 
+@section('admin-navbar')
+    <li class="active"><a href="{{ url('admin/users') }}">Users</a></li>
+    <li><a href="{{ url('admin/courts') }}">Courts</a></li>
+    <li><a href="{{ url('admin/reservations') }}">Reservations</a></li>
+@endsection
+
 @section('management-content')
 
     <article class="panel panel-success">
@@ -7,7 +13,6 @@
             <h1>Users</h1>
         </header>
         <div class="table-responsive">
-
             <table class="table table-striped" id="users-table">
                 <thead>
                 <tr>

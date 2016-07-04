@@ -67,8 +67,7 @@
         <div class="collapse navbar-collapse" id="app-navbar-collapse">
             <!-- Left Side Of Navbar -->
             <ul class="nav navbar-nav">
-                <li><a href="{{ url('/') }}">Home</a></li>
-                @yield('navbar');
+                @yield('navbar')
             </ul>
 
             <!-- Right Side Of Navbar -->

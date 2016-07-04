@@ -232,11 +232,10 @@ $( document ).ready( function ( ) {
         }, false );
     } else {
         $.getJSON( '../api/courts', function ( data ) {
+            loading = false;
             refreshCourts( data[ "courts" ]);
         } ).fail( function ( ) {
             alertFail( "Connection failed. Try again later" );
-        } ).always( function ( ) {
-            loading = false;
         } );
     }
 } );

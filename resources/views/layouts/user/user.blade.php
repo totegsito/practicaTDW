@@ -1,6 +1,6 @@
 @extends('layouts.user-authenticated')
 
 @section('navbar')
-    <li><a href="{{ url('user/padel') }}">Padel Courts</a></li>
-    <li><a href="{{ url('user/history') }}">My history</a></li>
+    <li><a href="{{ url('/') }}">Home</a></li>
+    @yield('user-navbar')
 @endsection
