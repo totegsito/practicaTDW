@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Reservation;
 use App\Users;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -50,7 +51,7 @@ class UsersController extends Controller
     {
 
         $validator= Validator::make($request->all(), [
-            'name' => 'required|max:255|unique:users',
+            'name' => 'required|max:255|unique:users|alpha_dash',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6',
             'firstname' => 'min:3|max:45',
@@ -173,6 +174,9 @@ class UsersController extends Controller
     {
         try {
             $user = Users::findOrFail($id);
+            foreach (Reservation::where('users_id', $id)->get() as $userReservation){
+                $userReservation->delete();
+            }
             $user->delete();
             return response()->json(['code' => 204, 'message' => 'User successfully removed'], 204);
         } catch (ModelNotFoundException $ex) {

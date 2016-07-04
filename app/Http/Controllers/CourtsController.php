@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Court;
+use App\Reservation;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Http\Request;
@@ -113,6 +114,9 @@ class CourtsController extends Controller
     {
         try {
             $court = Court::findOrFail($id);
+            foreach (Reservation::where('courts_id', $id)->get() as $courtReservation){
+                $courtReservation->delete();
+            }
             $court->delete();
             return response()->json(['code' => 204, 'message' => 'Court removed successfully', 'court'=>$court], 204);
         } catch (ModelNotFoundException $ex) {

@@ -1,5 +1,11 @@
 @extends('layouts.admin.management')
 
+@section('admin-navbar')
+    <li><a href="{{ url('admin/users') }}">Users</a></li>
+    <li class="active"><a href="{{ url('admin/courts') }}">Courts</a></li>
+    <li><a href="{{ url('admin/reservations') }}">Reservations</a></li>
+@endsection
+
 @section('management-content')
 
     <div class="alert alert-success hidden" role="alert" id="alert">
@@ -11,7 +17,7 @@
         </header>
         <div class="row" id="courts-space">
             <div class="col-xs-4" id="add-court">
-                <div class="panel panel-primary">
+                <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4>Add Court</h4>
                     </div>
@@ -27,7 +33,7 @@
                     </table>
                     <div class="panel-footer">
                         <div class="btn-group" role="group">
-                        <button id="add" type="button" class="btn btn-primary center">
+                        <button id="add" type="button" class="btn  btn-raised btn-primary center">
                             <span class="glyphicon glyphicon-plus"></span>
                         </button>
 
@@ -52,8 +58,8 @@
                     <p>Do you really want to delete the court?</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-danger" id="apply-delete">Delete</button>
+                    <button type="button" class="btn  btn-raised btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn  btn-raised btn-danger" id="apply-delete">Delete</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -71,12 +77,14 @@
                     <p>Do you really want to <strong id="edit-confirm"></strong> the court?</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-warning" id="apply-edit">Update</button>
+                    <button type="button" class="btn  btn-raised btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn  btn-raised btn-warning" id="apply-edit">Update</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div>
 
-    <script src="{{asset("js/admin-courts.js")}}"></script>
+@endsection
+@section('scripts')
+<script src="{{asset("js/admin-courts.js")}}"></script>
 @endsection

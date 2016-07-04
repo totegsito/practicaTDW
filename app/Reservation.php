@@ -15,7 +15,7 @@ class Reservation extends Model
 
 
     protected $fillable = [
-        "reservation_date", "users_id", "courts_id", "2nd_player", "3rd_player", "4th_player"
+        "reservation_date", "users_id", "courts_id", "1st_player","2nd_player", "3rd_player", "4th_player"
     ];
     /**
      * The attributes that aren't mass assignable.
@@ -23,7 +23,7 @@ class Reservation extends Model
      * @var array
      */
     protected $guarded = [
-        "id"
+        "id", "created_at"
     ];
 
     /**
