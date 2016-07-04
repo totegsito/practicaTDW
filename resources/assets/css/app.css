@@ -4,3 +4,19 @@ table.court td{
     padding: 1.5em 0 1.5em!important;
     text-align: center!important;
 }
+
+.nav-tabs li.active{
+    background-color: #00796B!important;
+}
+
+table.avaliable:hover{
+    cursor: pointer!important;
+}
+
+table.selected{
+    opacity: .4;
+}
+
+table.temporal td{
+    background-color: darkgreen !important;
+}

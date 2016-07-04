@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.user-authenticated')
 
 @section('content')
     <div class="alert alert-success hidden" role="alert" id="alert">
@@ -39,7 +39,8 @@
                     <button type="button" class="btn btn-raised btn-primary" data-toggle="modal" data-target="#myModal">
                         Edit Profile
                     </button>
-                    <button type="button" class="btn btn-raised btn-warning" data-toggle="modal" data-target="#changePasswordModal">
+                    <button type="button" class="btn btn-raised btn-warning" data-toggle="modal"
+                            data-target="#changePasswordModal">
                         Change Password
                     </button>
                 </div>
@@ -47,11 +48,13 @@
 
             </form>
             <!-- Modal -->
-            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                 data-backdrop="static" data-keyboard="false">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                        aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title" id="myModalLabel">Edit Profile</h4>
                         </div>
                         <div class="modal-body">
@@ -80,19 +83,23 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-raised btn-default" data-dismiss="modal">Cancel</button>
-                            <button type="button" class="btn btn-raised btn-primary" id="apply-edit">Save changes</button>
+                            <button type="button" class="btn btn-raised btn-default" data-dismiss="modal">Cancel
+                            </button>
+                            <button type="button" class="btn btn-raised btn-primary" id="apply-edit">Save changes
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Modal -->
-            <div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
+            <div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                 data-backdrop="static" data-keyboard="false">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                        aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title" id="myModalLabel">Edit Profile</h4>
                         </div>
                         <div class="modal-body">
@@ -100,20 +107,24 @@
                             <form id="changePass">
                                 <div class="form-group label-static">
                                     <label for="inputOldPassword" class="control-label">Current Password</label>
-                                    <input id="inputOldPassword" type="password" class="form-control" aria-describedby="currentInfo">
+                                    <input id="inputOldPassword" type="password" class="form-control"
+                                           aria-describedby="currentInfo">
                                     <span>
                                         <strong id="currentInfo" class="help-block hidden"></strong>
                                     </span>
                                 </div>
                                 <div class="form-group label-static">
                                     <label for="inputNewPassword" class="control-label">New Password</label>
-                                    <input id="inputNewPassword" type="password" class="form-control" aria-describedby="newInfo">
+                                    <input id="inputNewPassword" type="password" class="form-control"
+                                           aria-describedby="newInfo">
                                     <span>
                                         <strong id="newInfo" class="help-block hidden"></strong>
                                     </span>
-                                </div><div class="form-group label-static">
+                                </div>
+                                <div class="form-group label-static">
                                     <label for="inputConfirmPassword" class="control-label">Confirm Password</label>
-                                    <input id="inputConfirmPassword" type="password" class="form-control" aria-describedby="confirmInfo">
+                                    <input id="inputConfirmPassword" type="password" class="form-control"
+                                           aria-describedby="confirmInfo">
                                     <span>
                                         <strong id="confirmInfo" class="help-block hidden"></strong>
                                     </span>
@@ -121,8 +132,11 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-raised btn-default" data-dismiss="modal">Cancel</button>
-                            <button type="button" class="btn btn-raised btn-primary" id="apply-password-edit">Save changes</button>
+                            <button type="button" class="btn btn-raised btn-default" data-dismiss="modal">Cancel
+                            </button>
+                            <button type="button" class="btn btn-raised btn-primary" id="apply-password-edit">Save
+                                changes
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -132,11 +146,9 @@
 
     </article>
 
-
-
-
 @endsection
 
 @section('scripts')
-    <script src="{{ asset("js/profile-management.js") }}" ></script>
+    <script src="{{ asset("js/profile-management.js") }}"></script>
 @endsection
+

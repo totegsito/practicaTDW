@@ -37,7 +37,7 @@ $(document).ready(function () {
         var date = $('#reservation-date');
         if (date.val().match(/^\d\d\d\d-(0?[1-9]|1[0-2])-(0?[1-9]|[12][0-9]|3[01])$/)) {
             id = $('#reservation-id').val();
-            newReservation["reservation_date"] = date.val() + " " + $('input[name=putRadios]:checked').val() + ":00";
+            newReservation["reservation_date"] = date.val() + " " + $('input[name=putRadios]:checked').val() + ":00:00";
             var user = $('#reservation-user').val();
             var court = $('#reservation-court').val();
             if(user === ""){
@@ -100,7 +100,7 @@ $(document).ready(function () {
         var newReservation = {};
         var date = $('#add-date').val();
         if (date.match(/^\d\d\d\d-(0?[1-9]|1[0-2])-(0?[1-9]|[12][0-9]|3[01])$/)) {
-            newReservation["reservation_date"] = date + " " + $('input[name=optionsRadios]:checked').val() + ":00";
+            newReservation["reservation_date"] = date + " " + $('input[name=optionsRadios]:checked').val() + ":00:00";
             var user = $('#add-user').val();
             var court = $('#add-court').val();
             if(user === ""){

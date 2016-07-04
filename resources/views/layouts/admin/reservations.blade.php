@@ -179,7 +179,7 @@
                                     <strong id="dateInfo" class="help-block hidden"></strong>
                                 </span>
                             </div>
-                            <div class="col-md-10">
+                            <div class="form-group">
                                 <div class="radio radio-primary">
                                     <label>
                                         <input type="radio" name="putRadios" id="putRadios1" value="10">10:00

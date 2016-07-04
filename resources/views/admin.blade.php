@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.user-authenticated')
 
 @section('content')
 
@@ -18,4 +18,10 @@
         </section>
 
     </main>
+@endsection
+
+@section('navbar')
+    <li><a href="{{ url('admin/users') }}">Users</a></li>
+    <li><a href="{{ url('admin/courts') }}">Courts</a></li>
+    <li><a href="{{ url('admin/reservations') }}">Reservations</a></li>
 @endsection

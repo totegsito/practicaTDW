@@ -1,4 +1,5 @@
-@extends('layouts.user-authenticated')
+@extends('layouts.profile')
+
 
 @section('navbar')
     <li><a href="{{ url('user/padel') }}">Padel Courts</a></li>
